@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TypedSignalR.Client": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\..\\tests\\TypedSignalR.Client.Tests\\TypedSignalR.Client.Tests.csproj"
+    }
+  }
+}
