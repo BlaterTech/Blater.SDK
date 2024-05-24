@@ -1,5 +1,4 @@
-using Blater.Hubs;
-using Blater.SignalR.SourceGenerator;
+
 
 /*public class BlaterHubReceiver : IBlaterHubReceiver, IHubConnectionObserver
 {
