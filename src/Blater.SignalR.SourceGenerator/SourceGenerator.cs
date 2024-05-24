@@ -90,16 +90,13 @@ public sealed class SourceGenerator : IIncrementalGenerator
         cancellationToken.ThrowIfCancellationRequested();
 
         var node = context.Node as InvocationExpressionSyntax;
-        var target = node?.Expression as MemberAccessExpressionSyntax;
-
-        if (target is null)
+        
+        if (node?.Expression is not MemberAccessExpressionSyntax target)
         {
             return default;
         }
-
-        var methodSymbol = context.SemanticModel.GetSymbolInfo(target).Symbol as IMethodSymbol;
-
-        if (methodSymbol is null)
+        
+        if (context.SemanticModel.GetSymbolInfo(target).Symbol is not IMethodSymbol methodSymbol)
         {
             return default;
         }

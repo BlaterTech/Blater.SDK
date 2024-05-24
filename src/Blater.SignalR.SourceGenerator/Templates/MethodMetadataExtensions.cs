@@ -191,9 +191,7 @@ public static class MethodMetadataExtensions
 
     private static HubMethodType GetHubMethodType(this MethodMetadata methodMetadata, SpecialSymbols specialSymbols)
     {
-        var returnTypeSymbol = methodMetadata.ReturnTypeSymbol as INamedTypeSymbol;
-
-        if (returnTypeSymbol is null)
+        if (methodMetadata.ReturnTypeSymbol is not INamedTypeSymbol returnTypeSymbol)
         {
             return HubMethodType.None;
         }
@@ -324,17 +322,13 @@ public static class MethodMetadataExtensions
         {
             return string.Empty;
         }
-
-        var returnType = methodMetadata.MethodSymbol.ReturnType as INamedTypeSymbol;
-
-        if (returnType is null)
+        
+        if (methodMetadata.MethodSymbol.ReturnType is not INamedTypeSymbol returnType)
         {
             return string.Empty;
         }
-
-        var typeArgument = returnType.TypeArguments[0] as INamedTypeSymbol;
-
-        if (typeArgument is null)
+        
+        if (returnType.TypeArguments[0] is not INamedTypeSymbol typeArgument)
         {
             return string.Empty;
         }

@@ -26,10 +26,8 @@ public sealed class MethodMetadata
             .ToArray();
 
         ReturnType = methodSymbol.ReturnType.ToDisplayString(SymbolDisplayFormatRule.FullyQualifiedNullableReferenceTypeFormat);
-
-        var returnTypeSymbol = methodSymbol.ReturnType as INamedTypeSymbol;
-
-        if (returnTypeSymbol is not null)
+        
+        if (methodSymbol.ReturnType is INamedTypeSymbol returnTypeSymbol)
         {
             IsGenericReturnType = returnTypeSymbol.IsGenericType;
 

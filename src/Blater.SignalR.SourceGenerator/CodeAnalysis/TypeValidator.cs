@@ -72,10 +72,8 @@ public static class TypeValidator
                     isValid = false;
                     continue;
                 }
-
-                var returnTypeSymbol = methodSymbol.ReturnType as INamedTypeSymbol; // Task or Task<T>
-
-                if (returnTypeSymbol is null)
+                
+                if (methodSymbol.ReturnType is not INamedTypeSymbol returnTypeSymbol)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         DiagnosticDescriptorItems.HubMethodReturnTypeRule,
@@ -188,9 +186,8 @@ public static class TypeValidator
                 // ReturnType
                 //     Task : ordinary receiver method
                 //     Task<T> : client results
-                var returnTypeSymbol = methodSymbol.ReturnType as INamedTypeSymbol;
-
-                if (returnTypeSymbol is null)
+                
+                if (methodSymbol.ReturnType is not INamedTypeSymbol returnTypeSymbol)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         DiagnosticDescriptorItems.ReceiverMethodReturnTypeRule,
