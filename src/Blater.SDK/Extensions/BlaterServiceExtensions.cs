@@ -1,6 +1,5 @@
-using Blater.Hubs;
+/*using Blater.Hubs;
 using Blater.Interfaces;
-using Blater.SignalR.SourceGenerator;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,4 +35,4 @@ public static class BlaterServiceExtensions
         //services.AddScoped<IBlaterQueue, BlaterQueue>();
         //services.AddScoped<IBlaterAuthEndpoint, BlaterAuthEndpoint>();
     }
-}
+}*/
