@@ -19,7 +19,7 @@ public static class BlaterServiceExtensions
         //If ClientSecret is not provided, the user must authenticate manually
         
         HubConnection = new HubConnectionBuilder()
-                       .WithUrl("http://localhost:5136/BlaterEndpoint", options => options.Headers.Add("TenantId", Guid.NewGuid().ToString()))
+                       .WithUrl("http://localhost:5136/BlaterEndpoint", options => options.Headers.Add("TenantId", Guid.NewShortId().ToString()))
                        .WithStatefulReconnect()
                        .WithKeepAliveInterval(TimeSpan.FromSeconds(30))
                        .Build();
