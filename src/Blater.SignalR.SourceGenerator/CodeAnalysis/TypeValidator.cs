@@ -331,26 +331,25 @@ public static class TypeValidator
                 {
                     return true;
                 }
-                else
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(
-                         DiagnosticDescriptorItems.HubMethodCancellationTokenParameterRule,
-                         accessLocation,
-                         methodSymbol.ToDisplayString()));
-
-                    return false;
-                }
+                
+                context.ReportDiagnostic(Diagnostic.Create(
+                                             DiagnosticDescriptorItems.HubMethodCancellationTokenParameterRule,
+                                             accessLocation,
+                                             methodSymbol.ToDisplayString()));
+                
+                return false;
             }
             // return type: IAsyncEnumerable<T>
-            else if (SymbolEqualityComparer.Default.Equals(returnTypeSymbol.OriginalDefinition, specialSymbols.AsyncEnumerableSymbol))
+            
+            if (SymbolEqualityComparer.Default.Equals(returnTypeSymbol.OriginalDefinition, specialSymbols.AsyncEnumerableSymbol))
             {
                 return true;
             }
-
+            
             context.ReportDiagnostic(Diagnostic.Create(
-                DiagnosticDescriptorItems.HubMethodCancellationTokenParameterRule,
-                accessLocation,
-                methodSymbol.ToDisplayString()));
+                                         DiagnosticDescriptorItems.HubMethodCancellationTokenParameterRule,
+                                         accessLocation,
+                                         methodSymbol.ToDisplayString()));
 
             return false;
         }
