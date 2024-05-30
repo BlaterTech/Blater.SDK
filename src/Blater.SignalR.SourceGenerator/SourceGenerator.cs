@@ -53,15 +53,9 @@ public sealed class SourceGenerator : IIncrementalGenerator
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (syntaxNode is InvocationExpressionSyntax invocationExpressionSyntax)
+        if (syntaxNode is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax { Name.Identifier.ValueText: "CreateHubProxy" } })
         {
-            if (invocationExpressionSyntax.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
-            {
-                if (memberAccessExpressionSyntax.Name.Identifier.ValueText is "CreateHubProxy")
-                {
-                    return true;
-                }
-            }
+            return true;
         }
 
         return false;
@@ -71,15 +65,9 @@ public sealed class SourceGenerator : IIncrementalGenerator
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (syntaxNode is InvocationExpressionSyntax invocationExpressionSyntax)
+        if (syntaxNode is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax { Name.Identifier.ValueText: "Register" } })
         {
-            if (invocationExpressionSyntax.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
-            {
-                if (memberAccessExpressionSyntax.Name.Identifier.ValueText is "Register")
-                {
-                    return true;
-                }
-            }
+            return true;
         }
 
         return false;
