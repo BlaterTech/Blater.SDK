@@ -1,5 +1,4 @@
-﻿using Blater.Constants;
-using Blater.SDK.Contracts.Base;
+﻿using Blater.SDK.Contracts.Base;
 
 namespace Blater.SDK.Contracts.Authentication.Response;
 
