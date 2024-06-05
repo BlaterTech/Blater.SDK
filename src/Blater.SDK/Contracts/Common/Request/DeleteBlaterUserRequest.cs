@@ -2,5 +2,5 @@
 
 public class DeleteBlaterUserRequest
 {
-    public required string PasswordHash { get; set; }
+    public required string Password { get; set; }
 }
