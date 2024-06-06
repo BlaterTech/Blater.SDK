@@ -38,8 +38,4 @@
                           OutputItemType="Analyzer"
                           ReferenceOutputAssembly="false"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Contracts\Common\Response\" />
-    </ItemGroup>
 </Project>
