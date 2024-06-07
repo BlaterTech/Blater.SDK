@@ -1,6 +1,7 @@
 using Blater.Hubs;
 using Blater.Interfaces;
 using Blater.SignalR.SourceGenerator;
+using Blater.Utilities;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,7 @@ public static class BlaterServiceExtensions
         //If ClientSecret is not provided, the user must authenticate manually
         
         HubConnection = new HubConnectionBuilder()
-                       .WithUrl("http://localhost:5136/BlaterEndpoint", options => options.Headers.Add("TenantId", Guid.NewShortId().ToString()))
+                       .WithUrl("http://localhost:5136/BlaterEndpoint", options => options.Headers.Add("TenantId", SequentialGuidGenerator.NewGuid().ToString()))
                        .WithStatefulReconnect()
                        .WithKeepAliveInterval(TimeSpan.FromSeconds(30))
                        .Build();
