@@ -1,5 +1,4 @@
 using Blater.Hubs;
-using Blater.Interfaces;
 using Blater.SignalR.SourceGenerator;
 using Blater.Utilities;
 using Microsoft.AspNetCore.SignalR.Client;
