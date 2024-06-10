@@ -27,7 +27,7 @@ public static class BlaterServiceExtensions
         
         services.AddHostedService<StartBlaterService>();
         
-        //var authHub = HubConnection.CreateHubProxy<IBlaterAuthHub>();
+        var authHub = HubConnection.CreateHubProxy<IBlaterDatabaseHub>();
         
         
         
