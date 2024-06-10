@@ -28,6 +28,9 @@
         <PackageReference Include="Polly.RateLimiting" Version="8.4.0" />
 
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+
+        <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta09"
+                          PrivateAssets="all" ExcludeAssets="runtime" />
     </ItemGroup>
 
     <ItemGroup>
