@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Blater.SignalR.SourceGenerator": {
-      "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\..\\tests\\Blater.SignalR.SourceGenerator.Tests\\Blater.SignalR.SourceGenerator.Tests.csproj"
-    }
-  }
-}

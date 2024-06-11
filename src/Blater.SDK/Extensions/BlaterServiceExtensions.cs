@@ -1,4 +1,4 @@
-using Blater.Hubs;
+/*using Blater.Hubs;
 using Blater.SignalR.SourceGenerator;
 using Blater.Utilities;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -16,7 +16,7 @@ public static class BlaterServiceExtensions
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         
         var blaterSection = configuration.GetSection("Blater");
-        //TODO Get TenantId, ClientSecret, ClientId, Region, and Environment from configuration
+        //TODO QueryOne TenantId, ClientSecret, ClientId, Region, and Environment from configuration
         //If ClientSecret is not provided, the user must authenticate manually
         
         HubConnection = new HubConnectionBuilder()
@@ -28,14 +28,19 @@ public static class BlaterServiceExtensions
         services.AddHostedService<StartBlaterService>();
         
         var authHub = HubConnection.CreateHubProxy<IBlaterDatabaseHub>();
-        
-        
-        
-        
+        var helloWorld = HubConnection.CreateHubProxy<IHelloWorldHub>();
+
+        helloWorld.TestModel("asd", "asda");
+        var testModel = new TestModel();
+        //helloWorld.TestModel(testModel);
+
+
+
+
         //services.AddSingleton<IBlaterAuth>(blaterHub);
-        
+
         //services.AddTransient(typeof(IBlaterDatabaseRepository<>), typeof(BlaterDatabaseRepository<>));
         //services.AddScoped<IBlaterQueue, BlaterQueue>();
         //services.AddScoped<IBlaterAuthEndpoint, BlaterAuthEndpoint>();
     }
-}
+}*/
