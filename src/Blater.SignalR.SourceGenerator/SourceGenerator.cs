@@ -19,8 +19,8 @@ public sealed class SourceGenerator : IIncrementalGenerator
         {
             ctx.CancellationToken.ThrowIfCancellationRequested();
 
-            ctx.AddSource("TypedSignalR.Client.Components.Generated.cs", NormalizeNewLines(new ComponentsTemplate().TransformText()));
-            ctx.AddSource("TypedSignalR.Client.HubConnectionExtensions.Generated.cs", NormalizeNewLines(new HubConnectionExtensionsTemplate().TransformText()));
+            ctx.AddSource("Blater.SignalR.SourceGenerator.Components.Generated.cs", NormalizeNewLines(new ComponentsTemplate().TransformText()));
+            ctx.AddSource("Blater.SignalR.SourceGenerator.HubConnectionExtensions.Generated.cs", NormalizeNewLines(new HubConnectionExtensionsTemplate().TransformText()));
         });
 
         var specialSymbols = context.CompilationProvider
@@ -163,7 +163,7 @@ public sealed class SourceGenerator : IIncrementalGenerator
 
             Debug.WriteLine(source);
 
-            context.AddSource("TypedSignalR.Client.HubConnectionExtensions.HubInvoker.Generated.cs", source);
+            context.AddSource("Blater.SignalR.SourceGenerator.HubConnectionExtensions.HubInvoker.Generated.cs", source);
         }
         catch (Exception exception)
         {
@@ -189,7 +189,7 @@ public sealed class SourceGenerator : IIncrementalGenerator
 
             Debug.WriteLine(source);
 
-            context.AddSource("TypedSignalR.Client.HubConnectionExtensions.Binder.Generated.cs", source);
+            context.AddSource("Blater.SignalR.SourceGenerator.HubConnectionExtensions.Binder.Generated.cs", source);
         }
         catch (Exception exception)
         {
@@ -207,8 +207,8 @@ public sealed class SourceGenerator : IIncrementalGenerator
         var cancellationTokenSymbol = compilation.GetTypeByMetadataName("System.Threading.CancellationToken");
         var asyncEnumerableSymbol = compilation.GetTypeByMetadataName("System.Collections.Generic.IAsyncEnumerable`1");
         var channelReaderSymbol = compilation.GetTypeByMetadataName("System.Threading.Channels.ChannelReader`1");
-        var hubConnectionObserverSymbol = compilation.GetTypesByMetadataName("TypedSignalR.Client.IHubConnectionObserver");
-        var hubConnectionExtensions = compilation.GetTypesByMetadataName("TypedSignalR.Client.HubConnectionExtensions");
+        var hubConnectionObserverSymbol = compilation.GetTypesByMetadataName("Blater.SignalR.SourceGenerator.IHubConnectionObserver");
+        var hubConnectionExtensions = compilation.GetTypesByMetadataName("Blater.SignalR.SourceGenerator.HubConnectionExtensions");
 
         ImmutableArray<IMethodSymbol> createHubProxyMethodSymbol = ImmutableArray<IMethodSymbol>.Empty;
         ImmutableArray<IMethodSymbol> registerMethodSymbol = ImmutableArray<IMethodSymbol>.Empty;
