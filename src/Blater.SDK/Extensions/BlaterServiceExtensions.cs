@@ -28,12 +28,17 @@ public static class BlaterServiceExtensions
         services.AddHostedService<StartBlaterService>();
         
         var authHub = HubConnection.CreateHubProxy<IBlaterDatabaseHub>();
-        
-        
-        
-        
+        var helloWorld = HubConnection.CreateHubProxy<IHelloWorldHub>();
+
+        helloWorld.TestModel("asd", "asda");
+        var testModel = new TestModel();
+        //helloWorld.TestModel(testModel);
+
+
+
+
         //services.AddSingleton<IBlaterAuth>(blaterHub);
-        
+
         //services.AddTransient(typeof(IBlaterDatabaseRepository<>), typeof(BlaterDatabaseRepository<>));
         //services.AddScoped<IBlaterQueue, BlaterQueue>();
         //services.AddScoped<IBlaterAuthEndpoint, BlaterAuthEndpoint>();
