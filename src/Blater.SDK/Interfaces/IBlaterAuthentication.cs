@@ -1,4 +1,4 @@
-﻿using Blater.Resullts;
+﻿using Blater.Results;
 using Blater.SDK.Contracts.Authentication.Request;
 using Blater.SDK.Contracts.Common.Request;
 
