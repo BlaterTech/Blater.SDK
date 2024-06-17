@@ -2,6 +2,6 @@
 
 public class ResetBlaterUserPasswordRequest
 {
-    public required string NewPasswordHash { get; set; }
-    public required string OldPasswordHash { get; set; }
+    public required string NewPassword { get; set; }
+    public required string OldPassword { get; set; }
 }
