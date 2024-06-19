@@ -35,8 +35,4 @@
     <ItemGroup>
         <ProjectReference Include="..\..\..\Blater\src\Blater\Blater.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Implementations\" />
-    </ItemGroup>
 </Project>
