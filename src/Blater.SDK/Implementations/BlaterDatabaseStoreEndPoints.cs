@@ -36,12 +36,6 @@ public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterData
         return client.Post<IReadOnlyList<string>>($"{Endpoint}/{partition}/query", query);
     }
     
-    public IAsyncEnumerable<BlaterResult<string>> GetChanges()
-    {
-        //return client.Get<string>($"{Endpoint}/{partition}/changes");
-        throw new NotImplementedException();
-    }
-    
     public IAsyncEnumerable<BlaterResult<string>> GetChangesQuery(BlaterQuery query)
     {
         //return client.Get<string>($"{Endpoint}/{partition}/changes/query", query);
