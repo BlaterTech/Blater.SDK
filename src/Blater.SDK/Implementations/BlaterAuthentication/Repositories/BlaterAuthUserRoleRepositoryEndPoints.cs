@@ -1,4 +1,5 @@
-﻿using Blater.Interfaces.BlaterAuthentication.Repositories;
+﻿using Blater.Exceptions;
+using Blater.Interfaces.BlaterAuthentication.Repositories;
 using Blater.Models.User;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
@@ -6,79 +7,238 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterAuthUserRoleRepositoryEndPoints(BlaterAuthUserRoleStoreEndPoints storeEndPoints) : IBlaterAuthUserRoleRepository
 {
-    public Task<BlaterUser> AddToRole(string userId, string roleName)
+    public async Task<BlaterUser> AddToRole(string userId, string roleName)
     {
-        return storeEndPoints.Post<BlaterUser>($"{Endpoint}/add-to-role-with-name/{userId}/{roleName}");
+        var result = await storeEndPoints.AddToRole(userId, roleName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while adding user to role");
+        }
+        
+        return response;
     }
     
-    public Task<BlaterUser> AddToRole(BlaterUser user, BlaterRole role)
+    public async Task<BlaterUser> AddToRole(BlaterUser user, BlaterRole role)
     {
-        return storeEndPoints.Post<BlaterUser>($"{Endpoint}/add-to-role/{role.Name}", user);
+        var result = await storeEndPoints.AddToRole(user, role);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while adding user to role");
+        }
+        
+        return response;
     }
     
-    public Task<BlaterUser> RemoveFromRole(string userId, string roleName)
+    public async Task<BlaterUser> RemoveFromRole(string userId, string roleName)
     {
-        return storeEndPoints.Delete<BlaterUser>($"{Endpoint}/remove-from-role-with-name/{userId}/{roleName}");
+        var result = await storeEndPoints.RemoveFromRole(userId, roleName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error removing user from role");
+        }
+        
+        return response;
     }
     
-    public Task<BlaterUser> RemoveFromRole(BlaterUser user, BlaterRole role)
+    public async Task<BlaterUser> RemoveFromRole(BlaterUser user, BlaterRole role)
     {
-        return storeEndPoints.Post<BlaterUser>($"{Endpoint}/remove-from-role/{role.Name}", user);
+        var result = await storeEndPoints.RemoveFromRole(user, role);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error removing user from role");
+        }
+        
+        return response;
     }
     
-    public Task<bool> IsInRole(string userId, string roleName)
+    public async Task<bool> IsInRole(string userId, string roleName)
     {
-        return storeEndPoints.Get<bool>($"{Endpoint}/is-in-role-with-name/{userId}/{roleName}");
+        var result = await storeEndPoints.IsInRole(userId, roleName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
     }
     
-    public Task<bool> IsInRole(BlaterUser user, BlaterRole role)
+    public async Task<bool> IsInRole(BlaterUser user, BlaterRole role)
     {
-        return storeEndPoints.Post<bool>($"{Endpoint}/is-in-role/{role.Name}", user);
+        var result = await storeEndPoints.IsInRole(user, role);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
     }
     
-    public Task<IReadOnlyList<BlaterRole>> GetRoles(BlaterUser user)
+    public async Task<IReadOnlyList<BlaterRole>> GetRoles(BlaterUser user)
     {
-        return client.Post<IReadOnlyList<BlaterRole>>($"{Endpoint}/get-roles", user);
+        var result = await storeEndPoints.GetRoles(user);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while getting roles");
+        }
+        
+        return response;
     }
     
-    public Task<IReadOnlyList<string>> GetRoleNames(BlaterUser user)
+    public async Task<IReadOnlyList<string>> GetRoleNames(BlaterUser user)
     {
-        return storeEndPoints.Post<IReadOnlyList<string>>($"{Endpoint}/get-role-names", user);
+        var result = await storeEndPoints.GetRoleNames(user);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while getting roles");
+        }
+        
+        return response;
     }
     
-    public Task<IReadOnlyList<BlaterUser>> GetUsersInRole(string roleName)
+    public async Task<IReadOnlyList<BlaterUser>> GetUsersInRole(string roleName)
     {
-        return storeEndPoints.Get<IReadOnlyList<BlaterUser>>($"{Endpoint}/get-users-in-role-with-name/{roleName}");
+        var result = await storeEndPoints.GetUsersInRole(roleName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while getting users in role");
+        }
+        
+        return response;
     }
     
-    public Task<IReadOnlyList<BlaterUser>> GetUsersInRole(BlaterRole role)
+    public async Task<IReadOnlyList<BlaterUser>> GetUsersInRole(BlaterRole role)
     {
-        //return client.Get<IReadOnlyList<BlaterUser>>($"{Endpoint}/get-users-in-role-with-name/{role.Name}");
-        throw new NotImplementedException();
+        var result = await storeEndPoints.GetUsersInRole(role);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while getting users in role");
+        }
+        
+        return response;
     }
     
-    public Task<bool> IsInPermission(string userId, string permissionName)
+    public async Task<bool> IsInPermission(string userId, string permissionName)
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.IsInPermission(userId, permissionName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
     }
     
-    public Task<bool> IsInPermission(BlaterUser user, BlaterPermission permission)
+    public async Task<bool> IsInPermission(BlaterUser user, BlaterPermission permission)
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.IsInPermission(user, permission);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
     }
     
-    public Task<IReadOnlyList<string>> GetPermissions(BlaterUser user)
+    public async Task<IReadOnlyList<string>> GetPermissions(BlaterUser user)
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.GetPermissions(user);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while getting permissions");
+        }
+        
+        return response;
     }
     
-    public Task<IReadOnlyList<BlaterUser>> GetUsersInPermission(string permissionName)
+    public async Task<IReadOnlyList<BlaterUser>> GetUsersInPermission(string permissionName)
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.GetUsersInPermission(permissionName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while getting users in permission");
+        }
+        
+        return response;
     }
     
-    public Task<IReadOnlyList<BlaterUser>> GetUsersInPermission(BlaterPermission permission)
+    public async Task<IReadOnlyList<BlaterUser>> GetUsersInPermission(BlaterPermission permission)
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.GetUsersInPermission(permission);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while getting users in permission");
+        }
+        
+        return response;
     }
 }
