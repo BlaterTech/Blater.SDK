@@ -1,4 +1,5 @@
-﻿using Blater.Interfaces;
+﻿using Blater.Exceptions;
+using Blater.Interfaces;
 using Blater.Query.Models;
 using Blater.Results;
 
@@ -6,8 +7,7 @@ namespace Blater.SDK.Implementations;
 
 public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterDatabaseStore
 {
-    public string? Partition { get; set; }
-    private static string? Endpoint => "/v1/Database";
+    private static string Endpoint => "/v1/Database";
     
     public Task<BlaterResult<string>> Get(BlaterId id)
     {
@@ -24,9 +24,19 @@ public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterData
         return client.Post<IReadOnlyList<string>>($"{Endpoint}/{partition}/query", query);
     }
     
-    public IAsyncEnumerable<BlaterResult<string>> WatchChangesQuery(string partition, BlaterQuery query)
+    public async IAsyncEnumerable<BlaterResult<string>> WatchChangesQuery(string partition, BlaterQuery query)
     {
-        return client.Get<string>($"{Endpoint}/{partition}/changes/query", query);
+        var result = client.PostStream<string>($"{Endpoint}/{partition}/changes/query", query);
+        
+        await foreach (var item in result)
+        {
+            if (item.HandleErrors(out var errors, out var response))
+            {
+                throw new BlaterException(errors);
+            }
+
+            yield return response;
+        }
     }
     
     public Task<BlaterResult<BlaterId>> Upsert(BlaterId id, string json)
