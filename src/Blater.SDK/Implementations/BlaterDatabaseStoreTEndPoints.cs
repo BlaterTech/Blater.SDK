@@ -1,110 +1,257 @@
-﻿using Blater.Interfaces;
+﻿using System.Linq.Expressions;
+using Blater.Exceptions;
+using Blater.Interfaces;
+using Blater.JsonUtilities;
+using Blater.Query.Extensions;
 using Blater.Query.Models;
 using Blater.Results;
 
 namespace Blater.SDK.Implementations;
 
-public class BlaterDatabaseStoreTEndPoints(BlaterDatabaseStoreEndPoints storeEndPoints) : IBlaterDatabaseStoreT
+public class BlaterDatabaseStoreTEndPoints<T>(BlaterDatabaseStoreEndPoints storeEndPoints)
+    : IBlaterDatabaseStoreT<T>
+    where T : BaseDataModel
 {
-    public string? Partition { get; set; }
+    public string Partition => typeof(T).FullName?.SanitizeString() ?? string.Empty;
 
-    public Task<BlaterResult<string>> Get(BlaterId id)
+    private void ValidatePartition(BlaterId id)
     {
-        return storeEndPoints.Get<string>($"{endpoint}/get/{id}");
+        if (id.Partition != Partition)
+        {
+            throw new BlaterException("Could not get the type name of the entity");
+        }
     }
 
-    public Task<BlaterResult<string>> QueryOne(BlaterQuery query)
+    #region FindOne
+
+    public async Task<BlaterResult<T>> FindOne(BlaterId id)
     {
-        if (query == null)
+        ValidatePartition(id);
+
+        var result = await storeEndPoints.Get(id);
+        if (result.HandleErrors(out var errors, out var response))
         {
-            return Task.FromResult(new BlaterResult<string>(new BlaterError("Query Error")));
+            return errors;
         }
 
-        return storeEndPoints.Post<string>($"{endpoint}/queryOne", query);
+        var model = response.FromJson<T>();
+
+        if (model == null)
+        {
+            return BlaterErrors.NotFound;
+        }
+        
+        return model;
     }
 
-    public Task<BlaterResult<string>> QueryOne(string partition, BlaterQuery query)
+    public async Task<BlaterResult<T>> FindOne(BlaterQuery query)
     {
-        if (query == null)
+        var result = await storeEndPoints.QueryOne(Partition, query);
+        if (result.HandleErrors(out var errors, out var response))
         {
-            return Task.FromResult(new BlaterResult<string>(new BlaterError("Query Error")));
+            return errors;
         }
 
-        return storeEndPoints.Post<string>($"{endpoint}/{partition}/queryOne", query);
+        var model = response.FromJson<T>();
+
+        if (model == null)
+        {
+            return BlaterErrors.NotFound;
+        }
+        
+        return model;
     }
 
-    public Task<BlaterResult<IReadOnlyList<string>>> Query(BlaterQuery query)
+    public async Task<BlaterResult<T>> FindOne(Expression<Func<T, bool>> predicate)
     {
-        if (query == null)
+        var blaterQuery = predicate.ExpressionToBlaterQuery();
+        var result = await storeEndPoints.QueryOne(Partition, blaterQuery);
+        if (result.HandleErrors(out var errors, out var response))
         {
-            return Task.FromResult(new BlaterResult<string>(new BlaterError("Query Error")));
+            return errors;
         }
 
-        return storeEndPoints.Post<string>($"{endpoint}/query", query);
+        var model = response.FromJson<T>();
+
+        if (model == null)
+        {
+            return BlaterErrors.NotFound;
+        }
+        
+        return model;
     }
 
-    public Task<BlaterResult<IReadOnlyList<string>>> Query(string partition, BlaterQuery query)
+    #endregion
+
+    #region FindMany
+
+    public async Task<BlaterResult<IReadOnlyList<T>>> FindMany(BlaterQuery query)
     {
-        if (query == null)
+        var result = await storeEndPoints.Query(Partition, query);
+        if (result.HandleErrors(out var errors, out var response))
         {
-            return Task.FromResult(new BlaterResult<IReadOnlyList<string>>(new BlaterError("Query Error")));
+            return errors;
         }
 
-        return storeEndPoints.Post<IReadOnlyList<string>>($"{endpoint}/{partition}/query", query);
+        var models = response.Select(x => x.FromJson<T>()).ToList();
+
+        if (models.Count == 0)
+        {
+            return BlaterErrors.NotFound;
+        }
+        
+        return models.AsReadOnly()!;
     }
 
-    public IAsyncEnumerable<BlaterResult<string>> GetChanges()
+    public async Task<BlaterResult<IReadOnlyList<T>>> FindMany(Expression<Func<T, bool>> predicate)
     {
-        return storeEndPoints.Get<string>($"{endpoint}/{partition}/changes");
+        var blaterQuery = predicate.ExpressionToBlaterQuery();
+        var result = await storeEndPoints.Query(Partition, blaterQuery);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+
+        var models = response.Select(x => x.FromJson<T>()).ToList();
+
+        if (models.Count == 0)
+        {
+            return BlaterErrors.NotFound;
+        }
+        
+        return models.AsReadOnly()!;
     }
 
-    public IAsyncEnumerable<BlaterResult<string>> GetChangesQuery(BlaterQuery query)
+    #endregion
+
+    #region Upsert/Update/Insert
+
+    public async Task<BlaterResult<T>> Upsert(BlaterId id, T obj)
     {
-        throw new NotImplementedException();
+        ValidatePartition(id);
+        
+        var result = await storeEndPoints.Upsert(id, obj.ToJson()!);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+
+        obj.Id = response;
+
+        return obj;
     }
 
-    public Task<BlaterResult<BlaterId>> Upsert(BlaterId id, string json)
+    public async Task<BlaterResult<T>> Update(BlaterId id, T obj)
     {
-        throw new NotImplementedException();
+        ValidatePartition(id);
+        
+        var result = await storeEndPoints.Update(id, obj.ToJson()!);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+
+        obj.Id = response;
+
+        return obj;
     }
 
-    public Task<BlaterResult<BlaterId>> Update(BlaterId id, string json)
+    public async Task<BlaterResult<T>> Insert(BlaterId id, T obj)
     {
-        throw new NotImplementedException();
+        ValidatePartition(id);
+        
+        var result = await storeEndPoints.Insert(id, obj.ToJson()!);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+
+        obj.Id = response;
+
+        return obj;
     }
 
-    public Task<BlaterResult<BlaterId>> Insert(BlaterId id, string json)
+    #endregion
+
+    #region Changes
+
+    public async IAsyncEnumerable<BlaterResult<T>> GetChangesQuery(BlaterQuery query)
     {
-        throw new NotImplementedException();
+        var result = storeEndPoints.WatchChangesQuery(Partition, query);
+
+        await foreach (var item in result)
+        {
+            if (item.HandleErrors(out var errors, out var response))
+            {
+                yield return errors;
+            }
+
+            var model = response.FromJson<T>();
+
+            if (model == null)
+            {
+                yield return BlaterErrors.JsonSerializationError(response);
+            }
+            
+            yield return model!;
+        }
     }
 
-    public Task<BlaterResult<bool>> Delete(BlaterId id)
+    #endregion
+
+    #region Delete
+
+    public async Task<BlaterResult<bool>> Delete(BlaterId id)
     {
-        throw new NotImplementedException();
+        ValidatePartition(id);
+
+        var result = await storeEndPoints.Delete(id);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+        
+        return response;
     }
 
-    public Task<BlaterResult<int>> Delete(List<BlaterId> ids)
+    public async Task<BlaterResult<int>> Delete(List<BlaterId> ids)
     {
-        throw new NotImplementedException();
+        ids.ForEach(ValidatePartition);
+
+        var result = await storeEndPoints.Delete(ids);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+        
+        return response;
     }
 
-    public Task<BlaterResult<int>> Delete(BlaterQuery query)
+    public async Task<BlaterResult<int>> Delete(BlaterQuery query)
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.Delete(query);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+        
+        return response;
     }
 
-    public Task<BlaterResult<int>> Count()
+    #endregion
+
+    #region Count
+
+    public async Task<BlaterResult<int>> Count()
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.Count(Partition);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+        
+        return response;
     }
 
-    public Task<BlaterResult<int>> Count(string partition)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<BlaterResult<int>> Count(string partition, BlaterQuery query)
-    {
-        throw new NotImplementedException();
-    }
+    #endregion
 }
