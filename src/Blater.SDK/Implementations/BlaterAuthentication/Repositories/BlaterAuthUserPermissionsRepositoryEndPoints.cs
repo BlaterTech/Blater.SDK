@@ -31,23 +31,6 @@ public class BlaterAuthUserPermissionsRepositoryEndPoints(BlaterAuthUserPermissi
         return response;
     }
     
-    public async Task<IReadOnlyList<string>> GetPermissions(BlaterUser user)
-    {
-        var result = await storeEndPoints.GetPermissions(user);
-        
-        if (result.HandleErrors(out var errors, out var response))
-        {
-            throw new BlaterException(errors);
-        }
-        
-        if (response == null)
-        {
-            throw new BlaterException("Error while getting permissions");
-        }
-        
-        return response;
-    }
-    
     public async Task<IReadOnlyList<BlaterUser>> GetUsersInPermission(string permissionName)
     {
         var result = await storeEndPoints.GetUsersInPermission(permissionName);
