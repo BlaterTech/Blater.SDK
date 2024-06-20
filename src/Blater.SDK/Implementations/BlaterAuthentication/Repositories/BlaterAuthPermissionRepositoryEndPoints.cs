@@ -1,52 +1,52 @@
-﻿using Blater.Interfaces.BlaterAuthentication.Stores;
+﻿using Blater.Interfaces.BlaterAuthentication.Repositories;
 using Blater.Models.User;
 using Blater.Query.Models;
-using Blater.Results;
+using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthPermissionRepositoryEndPoints(BlaterHttpClient client) : IBlaterAuthPermissionRepository
+public class BlaterAuthPermissionRepositoryEndPoints(BlaterAuthPermissionRoleStoreEndPoints storeEndPoints) : IBlaterAuthPermissionRepository
 {
     private static string Endpoint => "/v1/Permission";
     
-    public Task<BlaterResult<BlaterPermission>> Create(BlaterPermission permission)
+    public Task<BlaterPermission> Create(BlaterPermission permission)
     {
-        return client.Post<BlaterPermission>($"{Endpoint}/", permission);
+        return storeEndPoints.Post<BlaterPermission>($"{Endpoint}/", permission);
     }
     
-    public Task<BlaterResult<BlaterPermission>> Update(BlaterPermission permission)
+    public Task<BlaterPermission> Update(BlaterPermission permission)
     {
-        return client.Put<BlaterPermission>($"{Endpoint}/", permission);
+        return storeEndPoints.Put<BlaterPermission>($"{Endpoint}/", permission);
     }
     
-    public Task<BlaterResult<bool>> Delete(BlaterPermission permission)
+    public Task<bool> Delete(BlaterPermission permission)
     {
-        return client.Delete<bool>($"{Endpoint}/{permission.Id}");
+        return storeEndPoints.Delete<bool>($"{Endpoint}/{permission.Id}");
     }
     
-    public Task<BlaterResult<bool>> Delete(BlaterId id)
+    public Task<bool> Delete(BlaterId id)
     {
         //return client.Delete<bool>($"{Endpoint}/{id}");
         throw new NotImplementedException();
     }
     
-    public Task<BlaterResult<bool>> Delete(BlaterQuery query)
+    public Task<bool> Delete(BlaterQuery query)
     {
         throw new NotImplementedException();
     }
     
-    public Task<BlaterResult<IReadOnlyList<BlaterPermission>>> GetAll()
+    public Task<IReadOnlyList<BlaterPermission>> GetAll()
     {
-        return client.Get<IReadOnlyList<BlaterPermission>>($"{Endpoint}/");
+        return storeEndPoints.Get<IReadOnlyList<BlaterPermission>>($"{Endpoint}/");
     }
     
-    public Task<BlaterResult<BlaterPermission>> GetById(BlaterId id)
+    public Task<BlaterPermission> GetById(BlaterId id)
     {
         //return client.Get<BlaterPermission>($"{Endpoint}/{id}");
         throw new NotImplementedException();
     }
     
-    public Task<BlaterResult<BlaterPermission>> GetPermission(string permissionName)
+    public Task<BlaterPermission> GetPermission(string permissionName)
     {
         //return client.Get<BlaterPermission>($"{Endpoint}/Permission/{permissionName}");
         throw new NotImplementedException();

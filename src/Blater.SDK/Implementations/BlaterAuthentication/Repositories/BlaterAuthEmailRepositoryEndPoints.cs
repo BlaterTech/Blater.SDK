@@ -1,21 +1,20 @@
 ﻿using Blater.Interfaces.BlaterAuthentication.Repositories;
-using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
-using Blater.Results;
+using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthEmailRepositoryEndPoints(BlaterHttpClient client) : IBlaterAuthEmailRepository
+public class BlaterAuthEmailRepositoryEndPoints(BlaterAuthEmailStoreEndPoints storeEndPoints) : IBlaterAuthEmailRepository
 {
     private static string Endpoint => "/v1/Auth";
     
-    public async Task<BlaterResult<BlaterUser?>> FindByEmail(string email)
+    public async Task<BlaterUser> FindByEmail(string email)
     {
-        return await client.Get<BlaterUser?>($"{Endpoint}/find-by-email/{email}");
+        return await storeEndPoints.Get<BlaterUser>($"{Endpoint}/find-by-email/{email}");
     }
     
-    public async Task<BlaterResult<BlaterUser?>> SetConfirmEmail(string email)
+    public async Task<BlaterUser> SetConfirmEmail(string email)
     {
-        return await client.Get<BlaterUser?>($"{Endpoint}/confirmEmail/{email}");
+        return await storeEndPoints.Get<BlaterUser>($"{Endpoint}/confirmEmail/{email}");
     }
 }

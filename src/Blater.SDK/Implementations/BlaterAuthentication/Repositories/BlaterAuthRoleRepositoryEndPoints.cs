@@ -1,53 +1,52 @@
 ﻿using Blater.Interfaces.BlaterAuthentication.Repositories;
-using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.Query.Models;
-using Blater.Results;
+using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthRoleRepositoryEndPoints(BlaterHttpClient client) : IBlaterAuthRoleRepository
+public class BlaterAuthRoleRepositoryEndPoints(BlaterAuthRoleStoreEndPoints storeEndPoints) : IBlaterAuthRoleRepository
 {
     private static string Endpoint => "/v1/Role";
     
     
-    public Task<BlaterResult<BlaterRole>> Create(BlaterRole role)
+    public Task<BlaterRole> Create(BlaterRole role)
     {
-        return client.Post<BlaterRole>($"{Endpoint}/create", role);
+        return storeEndPoints.Post<BlaterRole>($"{Endpoint}/create", role);
     }
     
-    public Task<BlaterResult<BlaterRole>> Update(BlaterRole role)
+    public Task<BlaterRole> Update(BlaterRole role)
     {
-        return client.Put<BlaterRole>($"{Endpoint}/update", role);
+        return storeEndPoints.Put<BlaterRole>($"{Endpoint}/update", role);
     }
     
-    public Task<BlaterResult<bool>> Delete(BlaterId id)
+    public Task<bool> Delete(BlaterId id)
     {
-        return client.Post<bool>($"{Endpoint}/delete", id);
+        return storeEndPoints.Post<bool>($"{Endpoint}/delete", id);
     }
     
-    public Task<BlaterResult<bool>> Delete(BlaterQuery query)
+    public Task<bool> Delete(BlaterQuery query)
     {
-        return client.Post<bool>($"{Endpoint}/delete-by-query", query);
+        return storeEndPoints.Post<bool>($"{Endpoint}/delete-by-query", query);
     }
     
-    public Task<BlaterResult<bool>> Delete(BlaterRole role)
+    public Task<bool> Delete(BlaterRole role)
     {
-        return client.Post<bool>($"{Endpoint}/delete-by-id/{role.Id}");
+        return storeEndPoints.Post<bool>($"{Endpoint}/delete-by-id/{role.Id}");
     }
     
-    public Task<BlaterResult<BlaterRole>> GetById(BlaterId id)
+    public Task<BlaterRole> GetById(BlaterId id)
     {
-        return client.Get<BlaterRole>($"{Endpoint}/get-by-id/{id}");
+        return storeEndPoints.Get<BlaterRole>($"{Endpoint}/get-by-id/{id}");
     }
     
-    public Task<BlaterResult<BlaterRole>> GetByName(string roleName)
+    public Task<BlaterRole> GetByName(string roleName)
     {
-        return client.Get<BlaterRole>($"{Endpoint}/get-by-name/{roleName}");
+        return storeEndPoints.Get<BlaterRole>($"{Endpoint}/get-by-name/{roleName}");
     }
     
-    public Task<BlaterResult<IReadOnlyList<BlaterRole>>> GetPermissions(string permissionName)
+    public Task<IReadOnlyList<BlaterRole>> GetPermissions(string permissionName)
     {
-        return client.Get<IReadOnlyList<BlaterRole>>($"{Endpoint}/get-permissions/{permissionName}");
+        return storeEndPoints.Get<IReadOnlyList<BlaterRole>>($"{Endpoint}/get-permissions/{permissionName}");
     }
 }
