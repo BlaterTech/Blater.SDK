@@ -1,5 +1,5 @@
 ﻿using Blater.Exceptions;
-using Blater.Interfaces;
+/*using Blater.Interfaces;
 
 namespace Blater.SDK.Implementations;
 
@@ -97,4 +97,4 @@ public class BlaterKeyValueRepositoryEndPoints(BlaterKeyValueStoreEndPoints stor
         
         return response;
     }
-}
+}*/
