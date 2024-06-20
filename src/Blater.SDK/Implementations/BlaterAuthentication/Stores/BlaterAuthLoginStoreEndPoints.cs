@@ -6,25 +6,25 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 public class BlaterAuthLoginStoreEndPoints(BlaterHttpClient client) : IBlaterAuthLoginStore
 {
-    private static string Endpoint => "/v1/";
+    private static string Endpoint => "/v1/Auth/login";
     
     public Task<BlaterResult<BlaterUser>> AddLogin(BlaterUser user, BlaterLoginInfo login)
     {
-        throw new NotImplementedException();
+        return client.Post<BlaterUser>($"{Endpoint}/add-login/{user.Id}", login);
     }
     
     public Task<BlaterResult<BlaterUser>> RemoveLogin(BlaterUser user, string loginProvider, string providerKey)
     {
-        throw new NotImplementedException();
+        return client.Delete<BlaterUser>($"{Endpoint}/remove-login/{user.Id}/{loginProvider}/{providerKey}");
     }
     
     public Task<BlaterResult<IReadOnlyList<BlaterLoginInfo>>> GetLogins(BlaterId id)
     {
-        throw new NotImplementedException();
+        return client.Get<IReadOnlyList<BlaterLoginInfo>>($"{Endpoint}/get-logins/{id}");
     }
     
     public Task<BlaterResult<BlaterUser>> FindByLogin(string loginProvider, string providerKey)
     {
-        throw new NotImplementedException();
+        return client.Get<BlaterUser>($"{Endpoint}/find-by-login/{loginProvider}/{providerKey}");
     }
 }
