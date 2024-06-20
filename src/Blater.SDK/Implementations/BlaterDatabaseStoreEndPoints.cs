@@ -24,7 +24,7 @@ public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterData
         return client.Post<IReadOnlyList<string>>($"{Endpoint}/{partition}/query", query);
     }
     
-    public IAsyncEnumerable<BlaterResult<string>> GetChangesQuery(string partition, BlaterQuery query)
+    public IAsyncEnumerable<BlaterResult<string>> WatchChangesQuery(string partition, BlaterQuery query)
     {
         return client.Get<string>($"{Endpoint}/{partition}/changes/query", query);
     }
