@@ -18,7 +18,7 @@ public class BlaterAuthLoginStoreEndPoints(BlaterHttpClient client) : IBlaterAut
         throw new NotImplementedException();
     }
     
-    public Task<BlaterResult<IEnumerable<BlaterLoginInfo>>> GetLogins(BlaterId id)
+    public Task<BlaterResult<IReadOnlyList<BlaterLoginInfo>>> GetLogins(BlaterId id)
     {
         throw new NotImplementedException();
     }
