@@ -1,4 +1,5 @@
-﻿using Blater.Interfaces.BlaterAuthentication.Repositories;
+﻿using Blater.Exceptions;
+using Blater.Interfaces.BlaterAuthentication.Repositories;
 using Blater.Models.User;
 using Blater.Results;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
@@ -9,28 +10,88 @@ public class BlaterAuthPermissionRoleRepositoryEndPoints(BlaterAuthPermissionRol
 {
     private static string Endpoint => "/v1/PermissionRole";
     
-    public Task<BlaterResult<BlaterRole>> AddToRole(BlaterRole role, BlaterPermission permission)
+    public async Task<BlaterRole> AddToRole(BlaterRole role, BlaterPermission permission)
     {
-        return storeEndPoints.Post<BlaterRole>($"{Endpoint}/add-to-role/{permission.Name}", role);
+        var result = await storeEndPoints.AddToRole(role, permission);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while adding to role");
+        }
+        
+        return response;
     }
     
-    public Task<BlaterResult<BlaterRole>> AddToRole(string roleName, string permissionName)
+    public async Task<BlaterRole> AddToRole(string roleName, string permissionName)
     {
-        return storeEndPoints.Post<BlaterRole>($"{Endpoint}/add-to-role/{roleName}/{permissionName}");
+        var result = await storeEndPoints.AddToRole(roleName, permissionName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while adding to role");
+        }
+        
+        return response;
     }
     
-    public Task<BlaterResult<BlaterRole>> RemoveFromRole(BlaterRole role, BlaterPermission permission)
+    public async Task<BlaterRole> RemoveFromRole(BlaterRole role, BlaterPermission permission)
     {
-        return storeEndPoints.Post<BlaterRole>($"{Endpoint}/remove-from-role/{permission.Name}", role);
+        var result = await storeEndPoints.RemoveFromRole(role, permission);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error removing from role");
+        }
+        
+        return response;
     }
     
-    public Task<BlaterResult<BlaterRole>> RemoveFromRole(string roleName, string permissionName)
+    public async Task<BlaterRole> RemoveFromRole(string roleName, string permissionName)
     {
-        return storeEndPoints.Delete<BlaterRole>($"{Endpoint}/remove-from-role-with-name/{roleName}/{permissionName}");
+        var result = await storeEndPoints.RemoveFromRole(roleName, permissionName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error removing from role");
+        }
+        
+        return response;
     }
     
-    public Task<IReadOnlyList<BlaterRole>> GetRoles(string permissionName)
+    public async Task<IReadOnlyList<BlaterRole>> GetRoles(string permissionName)
     {
-        return storeEndPoints.Get<IReadOnlyList<BlaterRole>>($"{Endpoint}/get-roles/{permissionName}");
+        var result = await storeEndPoints.GetRoles(permissionName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error removing from role");
+        }
+        
+        return response;
     }
 }
