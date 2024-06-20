@@ -10,16 +10,16 @@ public class BlaterTwoFactorRoleStoreEndPoints(BlaterHttpClient client) : IBlate
     
     public Task<BlaterResult<BlaterUser>> EnableTwoFactor(BlaterUser user, string id, string secret)
     {
-        return client.Get<BlaterUser>($"{Endpoint}/2fa/{email}/{enabled}");
+        return client.Post<BlaterUser>($"{Endpoint}/enabled/{user.Email}/{id}/{secret}");
     }
     
     public Task<BlaterResult<BlaterUser>> DisableTwoFactor(BlaterUser user, string code)
     {
-        throw new NotImplementedException();
+        return client.Post<BlaterUser>($"{Endpoint}/disabled/{user.Email}/{code}");
     }
     
     public Task<BlaterResult<bool>> VerifyOtpCode(string code)
     {
-        throw new NotImplementedException();
+        return client.Get<bool>($"{Endpoint}/verify-otp-code/{code}");
     }
 }
