@@ -1,10 +1,11 @@
-﻿using Blater.Interfaces.BlaterAuthentication.Stores;
+﻿using Blater.Interfaces.BlaterAuthentication.Repositories;
+using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.Results;
 
-namespace Blater.SDK.Implementations.BlaterAuthentication;
+namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthLoginStoreEndPoints(BlaterHttpClient client) : IBlaterAuthLoginStore
+public class BlaterAuthLoginRepositoryEndPoints(BlaterHttpClient client) : IBlaterAuthLoginRepository
 {
     private static string Endpoint => "/v1/";
     
@@ -18,7 +19,7 @@ public class BlaterAuthLoginStoreEndPoints(BlaterHttpClient client) : IBlaterAut
         throw new NotImplementedException();
     }
     
-    public Task<BlaterResult<IReadOnlyList<BlaterLoginInfo>>> GetLogins(BlaterId id)
+    public Task<BlaterResult<IEnumerable<BlaterLoginInfo>>> GetLogins(BlaterId id)
     {
         throw new NotImplementedException();
     }

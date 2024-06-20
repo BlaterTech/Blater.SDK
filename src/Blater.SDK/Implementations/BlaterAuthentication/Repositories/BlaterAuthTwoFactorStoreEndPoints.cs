@@ -1,10 +1,11 @@
-﻿using Blater.Interfaces.BlaterAuthentication.Stores;
+﻿using Blater.Interfaces.BlaterAuthentication.Repositories;
+using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.Results;
 
-namespace Blater.SDK.Implementations.BlaterAuthentication;
+namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterTwoFactorRoleStoreEndPoints(BlaterHttpClient client) : IBlaterAuthTwoFactorStore
+public class BlaterTwoFactorRoleRepositoryEndPoints(BlaterHttpClient client) : IBlaterAuthTwoFactorRepository
 {
     private static string Endpoint => "/v1/Auth/2fa";
     

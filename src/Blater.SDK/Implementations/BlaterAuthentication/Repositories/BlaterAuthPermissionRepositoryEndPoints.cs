@@ -3,9 +3,9 @@ using Blater.Models.User;
 using Blater.Query.Models;
 using Blater.Results;
 
-namespace Blater.SDK.Implementations.BlaterAuthentication;
+namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthPermissionStoreEndPoints(BlaterHttpClient client) : IBlaterAuthPermissionStore
+public class BlaterAuthPermissionRepositoryEndPoints(BlaterHttpClient client) : IBlaterAuthPermissionRepository
 {
     private static string Endpoint => "/v1/Permission";
     
