@@ -11,7 +11,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
 {
     public Task<BlaterResult<T?>> FindOne(BlaterId id)
     {
-        return client.Get<T?>($"{endpoint}/{id}");
+        return storeEndPoints.Get<T?>($"{endpoint}/{id}");
     }
     
     public Task<BlaterResult<T?>> FindOne(Expression<Func<T, bool>> predicate)
@@ -22,7 +22,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
         {
             return Task.FromResult(new BlaterResult<T>(new BlaterError("Query Error")));
         }
-        return client.Post<T?>($"{endpoint}", query);
+        return storeEndPoints.Post<T?>($"{endpoint}", query);
     }
     
     public Task<T?> FindOne(string partition, Expression<Func<T, bool>> predicate)
@@ -34,8 +34,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
         {
             return BlaterErrors.QueryError(predicate);
         }
-        return client.Post<T?>($"{endpoint}", query);
-        return default!;
+        return storeEndPoints.Post<T?>($"{endpoint}", query);
     }
     
     public Task<IReadOnlyList<T?>> FindMany(Expression<Func<T, bool>> predicate)
