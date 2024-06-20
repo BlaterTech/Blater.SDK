@@ -10,7 +10,7 @@ public class BlaterAuthEmailRepositoryEndPoints(BlaterAuthEmailStoreEndPoints st
     
     public async Task<BlaterUser> FindByEmail(string email)
     {
-        return await storeEndPoints.Get<BlaterUser>($"{Endpoint}/find-by-email/{email}");
+        return await storeEndPoints.FindByEmail(email);
     }
     
     public async Task<BlaterUser> SetConfirmEmail(string email)

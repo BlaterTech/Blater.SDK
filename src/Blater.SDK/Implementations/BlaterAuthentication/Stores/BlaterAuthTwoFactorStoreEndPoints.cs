@@ -10,7 +10,7 @@ public class BlaterTwoFactorRoleStoreEndPoints(BlaterHttpClient client) : IBlate
     
     public Task<BlaterResult<BlaterUser>> EnableTwoFactor(BlaterUser user, string id, string secret)
     {
-        return client.Get<BlaterUser>($"{Endpoint}/2fa/{email}/{{enabled:bool}}");
+        return client.Get<BlaterUser>($"{Endpoint}/2fa/{email}/{enabled}");
     }
     
     public Task<BlaterResult<BlaterUser>> DisableTwoFactor(BlaterUser user, string code)
