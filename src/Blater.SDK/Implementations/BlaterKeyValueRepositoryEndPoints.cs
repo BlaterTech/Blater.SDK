@@ -1,42 +1,100 @@
-﻿using Blater.Interfaces;
+﻿using Blater.Exceptions;
+using Blater.Interfaces;
 
 namespace Blater.SDK.Implementations;
 
-public class BlaterKeyValueRepositoryEndPoints(BlaterKeyValueStoreEndPoints storeEndPoints) : IBlaterKeyValueRepository
+public class BlaterKeyValueRepositoryEndPoints(BlaterKeyValueStoreEndPoints storeEndPoints) 
+    : IBlaterKeyValueRepository
 {
-    private static string Endpoint => "/v1/KeyValue";
-    public Task<TValue?> Get<TValue>(string key)
+    private static void ValidateKey(string key)
     {
-        return storeEndPoints.Get<TValue?>($"{Endpoint}/{key}");
-    }
-    
-    public Task<string?> Get(string key)
-    {
-        return storeEndPoints.Get<string?>($"{Endpoint}/{key}");
-    }
-    
-    public Task<IReadOnlyList<string>> Get()
-    {
-        return storeEndPoints.Get<IReadOnlyList<string>>($"{Endpoint}");
-    }
-    
-    public Task<bool> Set<TValue>(string key, TValue value)
-    {
-        if (value != null)
+        var parts = key.Split(':');
+
+        if (parts.Length != 2)
         {
-            return storeEndPoints.Post<bool>($"{Endpoint}/{key}", value);
+            throw new FormatException("The value is not in the correct format");
+        }
+    }
+    
+    public async Task<TValue> Get<TValue>(string key)
+    {
+        ValidateKey(key);
+        
+        var result = await storeEndPoints.Get<TValue>(key);
+
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
         }
         
-        return new Task<bool>(() =>false);
+        return response;
     }
     
-    public Task<bool> Set(string key, object value)
+    public async Task<string> Get(string key)
     {
-        return storeEndPoints.Post<bool>($"{Endpoint}/{key}", value);
+        ValidateKey(key);
+        
+        var result = await storeEndPoints.Get(key);
+
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
     }
     
-    public Task<bool> Remove(string key)
+    public async Task<IReadOnlyList<string>> Get()
     {
-        return storeEndPoints.Delete<bool>($"{Endpoint}/{key}");
+        var result = await storeEndPoints.Get();
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
+    }
+    
+    public async Task<bool> Set<TValue>(string key, TValue value)
+    {
+        ValidateKey(key);
+        
+        var result = await storeEndPoints.Set(key, value);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
+    }
+    
+    public async Task<bool> Set(string key, object value)
+    {
+        ValidateKey(key);
+        
+        var result = await storeEndPoints.Set(key, value);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
+    }
+    
+    public async Task<bool> Remove(string key)
+    {
+        ValidateKey(key);
+        
+        var result = await storeEndPoints.Remove(key);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
     }
 }
