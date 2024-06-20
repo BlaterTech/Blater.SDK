@@ -6,8 +6,6 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterAuthUserRoleRepositoryEndPoints(BlaterAuthUserRoleStoreEndPoints storeEndPoints) : IBlaterAuthUserRoleRepository
 {
-    private static string Endpoint => "/v1/UserRole";
-    
     public Task<BlaterUser> AddToRole(string userId, string roleName)
     {
         return storeEndPoints.Post<BlaterUser>($"{Endpoint}/add-to-role-with-name/{userId}/{roleName}");

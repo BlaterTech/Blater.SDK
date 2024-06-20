@@ -1,5 +1,8 @@
-﻿using Blater.Interfaces.BlaterAuthentication.Repositories;
+﻿using System.Linq.Expressions;
+using Blater.Exceptions;
+using Blater.Interfaces.BlaterAuthentication.Repositories;
 using Blater.Models.User;
+using Blater.Query.Extensions;
 using Blater.Query.Models;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
@@ -7,46 +10,127 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterAuthRoleRepositoryEndPoints(BlaterAuthRoleStoreEndPoints storeEndPoints) : IBlaterAuthRoleRepository
 {
-    private static string Endpoint => "/v1/Role";
     
-    
-    public Task<BlaterRole> Create(BlaterRole role)
+    public async Task<BlaterRole> Create(BlaterRole role)
     {
-        return storeEndPoints.Post<BlaterRole>($"{Endpoint}/create", role);
+        var result = await storeEndPoints.Create(role);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error creating role");
+        }
+        
+        return response;
     }
     
-    public Task<BlaterRole> Update(BlaterRole role)
+    public async Task<BlaterRole> Update(BlaterRole role)
     {
-        return storeEndPoints.Put<BlaterRole>($"{Endpoint}/update", role);
+        var result = await storeEndPoints.Update(role);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error updating role");
+        }
+        
+        return response;
     }
     
-    public Task<bool> Delete(BlaterId id)
+    public async Task<bool> Delete(BlaterId id)
     {
-        return storeEndPoints.Post<bool>($"{Endpoint}/delete", id);
+        var result = await storeEndPoints.Delete(id);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
     }
     
-    public Task<bool> Delete(BlaterQuery query)
+    public async Task<bool> Delete(Expression<Func<BlaterRole, bool>> predicate)
     {
-        return storeEndPoints.Post<bool>($"{Endpoint}/delete-by-query", query);
+        var query = predicate.ExpressionToBlaterQuery();
+        
+        var result = await storeEndPoints.Delete(query);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
     }
     
-    public Task<bool> Delete(BlaterRole role)
+    public async Task<bool> Delete(BlaterRole role)
     {
-        return storeEndPoints.Post<bool>($"{Endpoint}/delete-by-id/{role.Id}");
+        var result = await storeEndPoints.Delete(role);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        return response;
     }
     
-    public Task<BlaterRole> GetById(BlaterId id)
+    public async Task<BlaterRole> GetById(BlaterId id)
     {
-        return storeEndPoints.Get<BlaterRole>($"{Endpoint}/get-by-id/{id}");
+        var result = await storeEndPoints.GetById(id);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error getting role by id");
+        }
+        
+        return response;
     }
     
-    public Task<BlaterRole> GetByName(string roleName)
+    public async Task<BlaterRole> GetByName(string roleName)
     {
-        return storeEndPoints.Get<BlaterRole>($"{Endpoint}/get-by-name/{roleName}");
+        var result = await storeEndPoints.GetByName(roleName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error getting role by name");
+        }
+        
+        return response;
     }
     
-    public Task<IReadOnlyList<BlaterRole>> GetPermissions(string permissionName)
+    public async Task<IReadOnlyList<BlaterRole>> GetPermissions(string permissionName)
     {
-        return storeEndPoints.Get<IReadOnlyList<BlaterRole>>($"{Endpoint}/get-permissions/{permissionName}");
+        var result = await storeEndPoints.GetPermissions(permissionName);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error getting role by name");
+        }
+        
+        return response;
     }
 }

@@ -6,7 +6,6 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterTwoFactorRoleRepositoryEndPoints(BlaterTwoFactorRoleStoreEndPoints storeEndPoints) : IBlaterAuthTwoFactorRepository
 {
-    private static string Endpoint => "/v1/Auth/2fa";
     
     public Task<BlaterUser> EnableTwoFactor(BlaterUser user, string id, string secret)
     {

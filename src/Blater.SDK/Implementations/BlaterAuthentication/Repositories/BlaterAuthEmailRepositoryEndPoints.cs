@@ -7,8 +7,6 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterAuthEmailRepositoryEndPoints(BlaterAuthEmailStoreEndPoints storeEndPoints) : IBlaterAuthEmailRepository
 {
-    private static string Endpoint => "/v1/Auth";
-    
     public async Task<BlaterUser> FindByEmail(string email)
     {
         var result = await storeEndPoints.FindByEmail(email);

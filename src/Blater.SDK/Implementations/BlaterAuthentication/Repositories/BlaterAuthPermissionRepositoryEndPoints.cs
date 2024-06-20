@@ -10,8 +10,6 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterAuthPermissionRepositoryEndPoints(BlaterAuthPermissionStoreEndPoints storeEndPoints) : IBlaterAuthPermissionRepository
 {
-    private static string Endpoint => "/v1/Permission";
-    
     public async Task<BlaterPermission> Create(BlaterPermission permission)
     {
         var result = await storeEndPoints.Create(permission);

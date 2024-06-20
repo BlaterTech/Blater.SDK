@@ -8,8 +8,6 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterAuthPermissionRoleRepositoryEndPoints(BlaterAuthPermissionRoleStoreEndPoints storeEndPoints) : IBlaterAuthPermissionRoleRepository
 {
-    private static string Endpoint => "/v1/PermissionRole";
-    
     public async Task<BlaterRole> AddToRole(BlaterRole role, BlaterPermission permission)
     {
         var result = await storeEndPoints.AddToRole(role, permission);

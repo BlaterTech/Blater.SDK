@@ -6,8 +6,6 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterAuthLockoutRepositoryEndPoints(BlaterAuthLockoutStoreEndPoints storeEndPoints) : IBlaterAuthLockoutRepository
 {
-    private static string Endpoint => "/v1/";
-    
     public Task<BlaterUser> SetLockoutEndDate(BlaterUser user, DateTimeOffset? lockoutEnd)
     {
         throw new NotImplementedException();
