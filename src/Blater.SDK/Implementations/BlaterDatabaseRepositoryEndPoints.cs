@@ -1,4 +1,4 @@
-﻿/*using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Blater.Interfaces;
 using Blater.Query.Extensions;
@@ -7,7 +7,7 @@ using Blater.Results;
 
 namespace Blater.SDK.Implementations;
 
-public class BlaterDatabaseRepositoryEndPoints<T>(BlaterHttpClient client, string endpoint) where T : BaseDataModel, IBlaterDatabaseRepository<T>
+public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints storeEndPoints) where T : BaseDataModel, IBlaterDatabaseRepository<T>
 {
     public Task<BlaterResult<T?>> FindOne(BlaterId id)
     {
@@ -27,14 +27,14 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterHttpClient client, strin
     
     public Task<T?> FindOne(string partition, Expression<Func<T, bool>> predicate)
     {
-        /*var query = predicate.ExpressionToBlaterQuery();
+        var query = predicate.ExpressionToBlaterQuery();
 
         
         if (query == null)
         {
             return BlaterErrors.QueryError(predicate);
         }
-        return client.Post<T?>($"{endpoint}", query);#1#
+        return client.Post<T?>($"{endpoint}", query);
         return default!;
     }
     
@@ -105,4 +105,4 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterHttpClient client, strin
     }
     
     public IBlaterQueryable<T> Queryable { get; } = default!;
-}*/
+}

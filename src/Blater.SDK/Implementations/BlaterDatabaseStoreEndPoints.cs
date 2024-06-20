@@ -14,21 +14,9 @@ public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterData
         return client.Get<string>($"{Endpoint}/get/{id}");
     }
     
-    public Task<BlaterResult<string>> QueryOne(BlaterQuery query)
-    {
-        /*return client.Post<string>($"{Endpoint}/queryOne", query);*/
-        throw new NotImplementedException();
-    }
-    
     public Task<BlaterResult<string>> QueryOne(string partition, BlaterQuery query)
     {
         return client.Post<string>($"{Endpoint}/{partition}/queryOne", query);
-    }
-    
-    public Task<BlaterResult<IReadOnlyList<string>>> Query(BlaterQuery query)
-    {
-        /*return client.Post<string>($"{Endpoint}/query", query);*/
-        throw new NotImplementedException();
     }
     
     public Task<BlaterResult<IReadOnlyList<string>>> Query(string partition, BlaterQuery query)
@@ -36,10 +24,9 @@ public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterData
         return client.Post<IReadOnlyList<string>>($"{Endpoint}/{partition}/query", query);
     }
     
-    public IAsyncEnumerable<BlaterResult<string>> GetChangesQuery(BlaterQuery query)
+    public IAsyncEnumerable<BlaterResult<string>> GetChangesQuery(string partition, BlaterQuery query)
     {
-        //return client.Get<string>($"{Endpoint}/{partition}/changes/query", query);
-        throw new NotImplementedException();
+        return client.Get<string>($"{Endpoint}/{partition}/changes/query", query);
     }
     
     public Task<BlaterResult<BlaterId>> Upsert(BlaterId id, string json)
@@ -70,11 +57,6 @@ public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterData
     public Task<BlaterResult<int>> Delete(BlaterQuery query)
     {
         return client.Post<int>($"{Endpoint}/delete", query);
-    }
-    
-    public Task<BlaterResult<int>> Count()
-    {
-        throw new NotImplementedException();
     }
     
     public Task<BlaterResult<int>> Count(string partition)
