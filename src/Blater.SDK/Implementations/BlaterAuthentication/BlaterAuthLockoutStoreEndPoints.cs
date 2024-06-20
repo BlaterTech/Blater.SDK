@@ -1,5 +1,4 @@
-﻿/*using Blater.Interfaces.BlaterAuthentication;
-using Blater.Interfaces.BlaterAuthentication.Stores;
+﻿using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.Results;
 
@@ -9,12 +8,7 @@ public class BlaterAuthEmailStoreEndPoints(BlaterHttpClient client) : IBlaterAut
 {
     private static string Endpoint => "/v1/";
     
-    public Task<BlaterResult<DateTimeOffset>> GetLockoutEndDate(BlaterUser user)
-    {
-        throw new NotImplementedException();
-    }
-    
-    public Task SetLockoutEndDate(BlaterUser user, DateTimeOffset? lockoutEnd)
+    public Task<BlaterResult<BlaterUser>> SetLockoutEndDate(BlaterUser user, DateTimeOffset? lockoutEnd)
     {
         throw new NotImplementedException();
     }
@@ -24,23 +18,13 @@ public class BlaterAuthEmailStoreEndPoints(BlaterHttpClient client) : IBlaterAut
         throw new NotImplementedException();
     }
     
-    public Task ResetAccessFailedCount(BlaterUser user)
+    public Task<BlaterResult<BlaterUser>> ResetAccessFailedCount(BlaterUser user)
     {
         throw new NotImplementedException();
     }
     
-    public Task<BlaterResult<int>> GetAccessFailedCount(BlaterUser user)
+    public Task<BlaterResult<BlaterUser>> SetLockoutEnabled(BlaterUser user, bool enabled)
     {
         throw new NotImplementedException();
     }
-    
-    public Task<BlaterResult<bool>> GetLockoutEnabled(BlaterUser user)
-    {
-        throw new NotImplementedException();
-    }
-    
-    public Task SetLockoutEnabled(BlaterUser user, bool enabled)
-    {
-        throw new NotImplementedException();
-    }
-}*/
+}

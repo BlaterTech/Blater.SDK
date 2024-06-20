@@ -1,4 +1,4 @@
-﻿/*using Blater.Interfaces.BlaterAuthentication;
+﻿using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.Results;
 
@@ -8,17 +8,17 @@ public class BlaterAuthLoginStoreEndPoints(BlaterHttpClient client) : IBlaterAut
 {
     private static string Endpoint => "/v1/";
     
-    public Task AddLogin(BlaterUser user, BlaterLoginInfo login)
+    public Task<BlaterResult<BlaterUser>> AddLogin(BlaterUser user, BlaterLoginInfo login)
     {
         throw new NotImplementedException();
     }
     
-    public Task RemoveLogin(BlaterUser user, string loginProvider, string providerKey)
+    public Task<BlaterResult<BlaterUser>> RemoveLogin(BlaterUser user, string loginProvider, string providerKey)
     {
         throw new NotImplementedException();
     }
     
-    public Task<BlaterResult<IEnumerable<BlaterLoginInfo>>> GetLogins(BlaterUser user)
+    public Task<BlaterResult<IEnumerable<BlaterLoginInfo>>> GetLogins(BlaterId id)
     {
         throw new NotImplementedException();
     }
@@ -27,4 +27,4 @@ public class BlaterAuthLoginStoreEndPoints(BlaterHttpClient client) : IBlaterAut
     {
         throw new NotImplementedException();
     }
-}*/
+}
