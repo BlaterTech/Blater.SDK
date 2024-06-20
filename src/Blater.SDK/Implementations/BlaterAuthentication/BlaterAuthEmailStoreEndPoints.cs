@@ -8,18 +8,8 @@ public class BlaterAuthEmailStoreEndPoints(BlaterHttpClient client) : IBlaterAut
 {
     private static string Endpoint => "/v1/Auth";
     
-    public Task<BlaterResult<BlaterUser>> SetEmail(BlaterUser user, string? email)
+    public async Task<BlaterResult<BlaterUser?>> FindByEmail(string email)
     {
-        throw new NotImplementedException();
-    }
-    
-    public Task<BlaterResult<BlaterUser>> SetEmailConfirmed(BlaterUser user, bool confirmed)
-    {
-        return client.Get<BlaterUser>($"{Endpoint}/confirmEmail/{user.Email}");
-    }
-    
-    public Task<BlaterResult<BlaterUser?>> FindByEmail(string email)
-    {
-        throw new NotImplementedException();
+        return await client.Get<BlaterUser?>($"{Endpoint}/find-by-email/{email}");
     }
 }
