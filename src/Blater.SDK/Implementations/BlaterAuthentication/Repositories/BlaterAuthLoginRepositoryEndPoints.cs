@@ -1,4 +1,5 @@
-﻿using Blater.Interfaces.BlaterAuthentication.Repositories;
+﻿using Blater.Exceptions;
+using Blater.Interfaces.BlaterAuthentication.Repositories;
 using Blater.Models.User;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
@@ -6,25 +7,71 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterAuthLoginRepositoryEndPoints(BlaterAuthLoginStoreEndPoints storeEndPoints) : IBlaterAuthLoginRepository
 {
-    private static string Endpoint => "/v1/";
-    
-    public Task<BlaterUser> AddLogin(BlaterUser user, BlaterLoginInfo login)
+    public async Task<BlaterUser> AddLogin(BlaterUser user, BlaterLoginInfo login)
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.AddLogin(user, login);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while adding login");
+        }
+        
+        return response;
     }
     
-    public Task<BlaterUser> RemoveLogin(BlaterUser user, string loginProvider, string providerKey)
+    public async Task<BlaterUser> RemoveLogin(BlaterUser user, string loginProvider, string providerKey)
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.RemoveLogin(user, loginProvider, providerKey);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while removing login");
+        }
+        
+        return response;
     }
     
-    public Task<IEnumerable<BlaterLoginInfo>> GetLogins(BlaterId id)
+    public async Task<IReadOnlyList<BlaterLoginInfo>> GetLogins(BlaterId id)
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.GetLogins(id);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while getting logins");
+        }
+        
+        return response;
     }
     
-    public Task<BlaterUser> FindByLogin(string loginProvider, string providerKey)
+    public async Task<BlaterUser> FindByLogin(string loginProvider, string providerKey)
     {
-        throw new NotImplementedException();
+        var result = await storeEndPoints.FindByLogin(loginProvider, providerKey);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+        
+        if (response == null)
+        {
+            throw new BlaterException("Error while finding user by login");
+        }
+        
+        return response;
     }
 }
