@@ -4,7 +4,7 @@ using Blater.Results;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication;
 
-public class BlaterAuthEmailStoreEndPoints(BlaterHttpClient client) : IBlaterAuthLockoutStore
+public class BlaterAuthLockoutStoreEndPoints(BlaterHttpClient client) : IBlaterAuthLockoutStore
 {
     private static string Endpoint => "/v1/";
     

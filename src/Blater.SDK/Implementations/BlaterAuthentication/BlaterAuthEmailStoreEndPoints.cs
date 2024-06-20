@@ -12,4 +12,9 @@ public class BlaterAuthEmailStoreEndPoints(BlaterHttpClient client) : IBlaterAut
     {
         return await client.Get<BlaterUser?>($"{Endpoint}/find-by-email/{email}");
     }
+    
+    public async Task<BlaterResult<BlaterUser?>> SetConfirmEmail(string email)
+    {
+        return await client.Get<BlaterUser?>($"{Endpoint}/confirmEmail/{email}");
+    }
 }
