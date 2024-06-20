@@ -10,7 +10,7 @@ public class BlaterDatabaseStoreTEndPoints(BlaterDatabaseStoreEndPoints storeEnd
 
     public Task<BlaterResult<string>> Get(BlaterId id)
     {
-        return client.Get<string>($"{endpoint}/get/{id}");
+        return storeEndPoints.Get<string>($"{endpoint}/get/{id}");
     }
 
     public Task<BlaterResult<string>> QueryOne(BlaterQuery query)
@@ -20,8 +20,7 @@ public class BlaterDatabaseStoreTEndPoints(BlaterDatabaseStoreEndPoints storeEnd
             return Task.FromResult(new BlaterResult<string>(new BlaterError("Query Error")));
         }
 
-        return client.Post<string>($"{endpoint}/queryOne", query);#1#
-        throw new NotImplementedException();
+        return storeEndPoints.Post<string>($"{endpoint}/queryOne", query);
     }
 
     public Task<BlaterResult<string>> QueryOne(string partition, BlaterQuery query)
@@ -31,7 +30,7 @@ public class BlaterDatabaseStoreTEndPoints(BlaterDatabaseStoreEndPoints storeEnd
             return Task.FromResult(new BlaterResult<string>(new BlaterError("Query Error")));
         }
 
-        return client.Post<string>($"{endpoint}/{partition}/queryOne", query);
+        return storeEndPoints.Post<string>($"{endpoint}/{partition}/queryOne", query);
     }
 
     public Task<BlaterResult<IReadOnlyList<string>>> Query(BlaterQuery query)
@@ -41,9 +40,7 @@ public class BlaterDatabaseStoreTEndPoints(BlaterDatabaseStoreEndPoints storeEnd
             return Task.FromResult(new BlaterResult<string>(new BlaterError("Query Error")));
         }
 
-        return client.Post<string>($"{endpoint}/query", query);
-
-        throw new NotImplementedException();
+        return storeEndPoints.Post<string>($"{endpoint}/query", query);
     }
 
     public Task<BlaterResult<IReadOnlyList<string>>> Query(string partition, BlaterQuery query)
@@ -53,12 +50,12 @@ public class BlaterDatabaseStoreTEndPoints(BlaterDatabaseStoreEndPoints storeEnd
             return Task.FromResult(new BlaterResult<IReadOnlyList<string>>(new BlaterError("Query Error")));
         }
 
-        return client.Post<IReadOnlyList<string>>($"{endpoint}/{partition}/query", query);
+        return storeEndPoints.Post<IReadOnlyList<string>>($"{endpoint}/{partition}/query", query);
     }
 
     public IAsyncEnumerable<BlaterResult<string>> GetChanges()
     {
-        return client.Get<string>($"{endpoint}/{partition}/changes");
+        return storeEndPoints.Get<string>($"{endpoint}/{partition}/changes");
     }
 
     public IAsyncEnumerable<BlaterResult<string>> GetChangesQuery(BlaterQuery query)

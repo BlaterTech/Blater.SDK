@@ -3,41 +3,41 @@ using Blater.Results;
 
 namespace Blater.SDK.Implementations;
 
-public class BlaterKeyValueRepositoryEndPoints(BlaterHttpClient client) : IBlaterKeyValueRepository
+public class BlaterKeyValueRepositoryEndPoints(BlaterKeyValueStoreEndPoints storeEndPoints) : IBlaterKeyValueRepository
 {
     private static string Endpoint => "/v1/KeyValue";
-    public Task<BlaterResult<TValue?>> Get<TValue>(string key)
+    public Task<TValue?> Get<TValue>(string key)
     {
-        return client.Get<TValue?>($"{Endpoint}/{key}");
+        return storeEndPoints.Get<TValue?>($"{Endpoint}/{key}");
     }
     
-    public Task<BlaterResult<string?>> Get(string key)
+    public Task<string?> Get(string key)
     {
-        return client.Get<string?>($"{Endpoint}/{key}");
+        return storeEndPoints.Get<string?>($"{Endpoint}/{key}");
     }
     
-    public Task<BlaterResult<IReadOnlyList<string>>> Get()
+    public Task<IReadOnlyList<string>> Get()
     {
-        return client.Get<IReadOnlyList<string>>($"{Endpoint}");
+        return storeEndPoints.Get<IReadOnlyList<string>>($"{Endpoint}");
     }
     
-    public Task<BlaterResult<bool>> Set<TValue>(string key, TValue value)
+    public Task<bool> Set<TValue>(string key, TValue value)
     {
         if (value != null)
         {
-            return client.Post<bool>($"{Endpoint}/{key}", value);
+            return storeEndPoints.Post<bool>($"{Endpoint}/{key}", value);
         }
         
-        return new Task<BlaterResult<bool>>(() => new BlaterResult<bool>(false));
+        return new Task<bool>(() =>false);
     }
     
-    public Task<BlaterResult<bool>> Set(string key, object value)
+    public Task<bool> Set(string key, object value)
     {
-        return client.Post<bool>($"{Endpoint}/{key}", value);
+        return storeEndPoints.Post<bool>($"{Endpoint}/{key}", value);
     }
     
-    public Task<BlaterResult<bool>> Remove(string key)
+    public Task<bool> Remove(string key)
     {
-        return client.Delete<bool>($"{Endpoint}/{key}");
+        return storeEndPoints.Delete<bool>($"{Endpoint}/{key}");
     }
 }
