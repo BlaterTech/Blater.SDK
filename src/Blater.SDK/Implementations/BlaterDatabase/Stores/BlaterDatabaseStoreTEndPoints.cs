@@ -6,7 +6,7 @@ using Blater.Query.Extensions;
 using Blater.Query.Models;
 using Blater.Results;
 
-namespace Blater.SDK.Implementations;
+namespace Blater.SDK.Implementations.BlaterDatabase.Stores;
 
 public class BlaterDatabaseStoreTEndPoints<T>(BlaterDatabaseStoreEndPoints storeEndPoints)
     : IBlaterDatabaseStoreT<T>

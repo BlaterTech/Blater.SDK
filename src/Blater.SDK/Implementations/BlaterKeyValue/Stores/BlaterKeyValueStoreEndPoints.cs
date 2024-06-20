@@ -1,7 +1,7 @@
 ﻿using Blater.Interfaces;
 using Blater.Results;
 
-namespace Blater.SDK.Implementations;
+namespace Blater.SDK.Implementations.BlaterKeyValue.Stores;
 
 public class BlaterKeyValueStoreEndPoints(BlaterHttpClient client) : IBlaterKeyValueStore
 {

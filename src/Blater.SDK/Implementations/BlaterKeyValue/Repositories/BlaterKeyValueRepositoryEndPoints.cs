@@ -1,7 +1,9 @@
 ﻿
-/*using Blater.Interfaces;
+using Blater.Exceptions;
+using Blater.Interfaces;
+using Blater.SDK.Implementations.BlaterKeyValue.Stores;
 
-namespace Blater.SDK.Implementations;
+namespace Blater.SDK.Implementations.BlaterKeyValue.Repositories;
 
 public class BlaterKeyValueRepositoryEndPoints(BlaterKeyValueStoreEndPoints storeEndPoints) 
     : IBlaterKeyValueRepository
@@ -97,4 +99,4 @@ public class BlaterKeyValueRepositoryEndPoints(BlaterKeyValueStoreEndPoints stor
         
         return response;
     }
-}*/
+}

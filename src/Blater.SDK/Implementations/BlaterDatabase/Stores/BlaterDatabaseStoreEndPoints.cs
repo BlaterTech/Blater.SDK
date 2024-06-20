@@ -3,7 +3,7 @@ using Blater.Interfaces;
 using Blater.Query.Models;
 using Blater.Results;
 
-namespace Blater.SDK.Implementations;
+namespace Blater.SDK.Implementations.BlaterDatabase.Stores;
 
 public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterDatabaseStore
 {

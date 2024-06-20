@@ -55,32 +55,6 @@ public class BlaterAuthUserRoleStoreEndPoints(BlaterHttpClient client) : IBlater
     
     public Task<BlaterResult<IReadOnlyList<BlaterUser>>> GetUsersInRole(BlaterRole role)
     {
-        //return client.Get<IReadOnlyList<BlaterUser>>($"{Endpoint}/get-users-in-role-with-name/{role.Name}");
-        throw new NotImplementedException();
-    }
-    
-    public Task<BlaterResult<bool>> IsInPermission(string userId, string permissionName)
-    {
-        throw new NotImplementedException();
-    }
-    
-    public Task<BlaterResult<bool>> IsInPermission(BlaterUser user, BlaterPermission permission)
-    {
-        throw new NotImplementedException();
-    }
-    
-    public Task<BlaterResult<IReadOnlyList<string>>> GetPermissions(BlaterUser user)
-    {
-        throw new NotImplementedException();
-    }
-    
-    public Task<BlaterResult<IReadOnlyList<BlaterUser>>> GetUsersInPermission(string permissionName)
-    {
-        throw new NotImplementedException();
-    }
-    
-    public Task<BlaterResult<IReadOnlyList<BlaterUser>>> GetUsersInPermission(BlaterPermission permission)
-    {
-        throw new NotImplementedException();
+        return client.Get<IReadOnlyList<BlaterUser>>($"{Endpoint}/get-users-in-role-with-name/{role.Name}");
     }
 }

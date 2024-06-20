@@ -26,13 +26,12 @@ public class BlaterAuthPermissionStoreEndPoints(BlaterHttpClient client) : IBlat
     
     public Task<BlaterResult<bool>> Delete(BlaterId id)
     {
-        //return client.Delete<bool>($"{Endpoint}/{id}");
-        throw new NotImplementedException();
+        return client.Delete<bool>($"{Endpoint}/{id}");
     }
     
     public Task<BlaterResult<bool>> Delete(BlaterQuery query)
     {
-        throw new NotImplementedException();
+        return client.Post<bool>($"{Endpoint}/delete-by-query", query);
     }
     
     public Task<BlaterResult<IReadOnlyList<BlaterPermission>>> GetAll()
@@ -42,13 +41,11 @@ public class BlaterAuthPermissionStoreEndPoints(BlaterHttpClient client) : IBlat
     
     public Task<BlaterResult<BlaterPermission>> GetById(BlaterId id)
     {
-        //return client.Get<BlaterPermission>($"{Endpoint}/{id}");
-        throw new NotImplementedException();
+        return client.Get<BlaterPermission>($"{Endpoint}/get-by-id/{id}");
     }
     
     public Task<BlaterResult<BlaterPermission>> GetPermission(string permissionName)
     {
-        //return client.Get<BlaterPermission>($"{Endpoint}/Permission/{permissionName}");
-        throw new NotImplementedException();
+        return client.Get<BlaterPermission>($"{Endpoint}/get-by-name/{permissionName}");
     }
 }

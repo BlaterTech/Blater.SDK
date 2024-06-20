@@ -4,8 +4,9 @@ using Blater.Interfaces;
 using Blater.JsonUtilities;
 using Blater.Query.Extensions;
 using Blater.Query.Interfaces;
+using Blater.SDK.Implementations.BlaterDatabase.Stores;
 
-namespace Blater.SDK.Implementations;
+namespace Blater.SDK.Implementations.BlaterDatabase.Repositories;
 
 public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints storeEndPoints) : IBlaterDatabaseRepository<T>
     where T : BaseDataModel
