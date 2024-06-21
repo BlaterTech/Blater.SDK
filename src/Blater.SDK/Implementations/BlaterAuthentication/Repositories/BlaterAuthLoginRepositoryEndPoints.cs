@@ -7,6 +7,28 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterAuthLoginRepositoryEndPoints(BlaterAuthLoginStoreEndPoints storeEndPoints) : IBlaterAuthLoginRepository
 {
+    public async Task<string> LoginLocal(string email, string password)
+    {
+        var result = await storeEndPoints.LoginLocal(email, password);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+
+        return response;
+    }
+
+    public async Task<BlaterUser> Register(string email, string password, string name)
+    {
+        var result = await storeEndPoints.Register(email, password, name);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            throw new BlaterException(errors);
+        }
+
+        return response;
+    }
+
     public async Task<BlaterUser> AddLogin(BlaterUser user, BlaterLoginInfo login)
     {
         var result = await storeEndPoints.AddLogin(user, login);

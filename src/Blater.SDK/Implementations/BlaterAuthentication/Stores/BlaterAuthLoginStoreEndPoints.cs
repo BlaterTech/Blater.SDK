@@ -7,7 +7,17 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Stores;
 public class BlaterAuthLoginStoreEndPoints(BlaterHttpClient client) : IBlaterAuthLoginStore
 {
     private static string Endpoint => "/v1/Auth/login";
-    
+
+    public Task<BlaterResult<string>> LoginLocal(string email, string password)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BlaterResult<BlaterUser>> Register(string email, string password, string name)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<BlaterResult<BlaterUser>> AddLogin(BlaterUser user, BlaterLoginInfo login)
     {
         return client.Post<BlaterUser>($"{Endpoint}/add-login/{user.Id}", login);
