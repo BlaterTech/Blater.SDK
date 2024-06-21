@@ -1,6 +1,8 @@
 ﻿using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.Results;
+using Blater.SDK.Contracts.Authentication.Request;
+using Blater.SDK.Contracts.Common.Request;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
@@ -10,12 +12,23 @@ public class BlaterAuthLoginStoreEndPoints(BlaterHttpClient client) : IBlaterAut
 
     public Task<BlaterResult<string>> LoginLocal(string email, string password)
     {
-        throw new NotImplementedException();
+        var request = new AuthRequest
+        {
+            Email = email,
+            Password = password
+        };
+        return client.Post<string>($"{Endpoint}/local", request);
     }
 
     public Task<BlaterResult<BlaterUser>> Register(string email, string password, string name)
     {
-        throw new NotImplementedException();
+        var request = new RegisterBlaterUserRequest
+        {
+            Email = email,
+            Name = name,
+            Password = password
+        };
+        return client.Post<BlaterUser>($"{Endpoint}/register", request);
     }
 
     public Task<BlaterResult<BlaterUser>> AddLogin(BlaterUser user, BlaterLoginInfo login)
