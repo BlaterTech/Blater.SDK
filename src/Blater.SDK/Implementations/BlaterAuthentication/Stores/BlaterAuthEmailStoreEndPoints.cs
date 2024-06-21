@@ -1,6 +1,7 @@
-﻿using Blater.Interfaces.BlaterAuthentication.Stores;
-using Blater.Models.User;
+﻿using Blater.Models.User;
 using Blater.Results;
+using Blater.SDK.Contracts.Common.Request;
+using IBlaterAuthEmailStore = Blater.SDK.Interfaces.IBlaterAuthEmailStore;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
@@ -8,13 +9,18 @@ public class BlaterAuthEmailStoreEndPoints(BlaterHttpClient client) : IBlaterAut
 {
     private static string Endpoint => "/v1/Auth";
     
-    public async Task<BlaterResult<BlaterUser?>> FindByEmail(string email)
+    public Task<BlaterResult<BlaterUser>> FindByEmail(string email)
     {
-        return await client.Get<BlaterUser?>($"{Endpoint}/find-by-email/{email}");
+        return client.Get<BlaterUser>($"{Endpoint}/find-by-email/{email}");
     }
-    
-    public async Task<BlaterResult<BlaterUser>> SetEmailConfirmed(BlaterUser user)
+
+    public Task<BlaterResult<bool>> ResetEmail(string email, ResetBlaterUserEmailRequest request)
     {
-        return await client.Get<BlaterUser>($"{Endpoint}/confirmEmail/{user.Email}");
+        return client.Post<bool>($"{Endpoint}/resetEmail/{email}", request);
+    }
+
+    public Task<BlaterResult<BlaterUser>> SetEmailConfirmed(BlaterUser user)
+    {
+        return client.Get<BlaterUser>($"{Endpoint}/confirmEmail/{user.Email}");
     }
 }
