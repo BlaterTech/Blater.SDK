@@ -1,5 +1,4 @@
 ﻿using Blater.Exceptions;
-using Blater.Interfaces.BlaterAuthentication.Repositories;
 using Blater.Models.User;
 using Blater.SDK.Contracts.Common.Request;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;

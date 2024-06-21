@@ -1,5 +1,4 @@
 ﻿using Blater.Models.User;
-using Blater.Results;
 using Blater.SDK.Contracts.Common.Request;
 
 namespace Blater.SDK.Interfaces;
