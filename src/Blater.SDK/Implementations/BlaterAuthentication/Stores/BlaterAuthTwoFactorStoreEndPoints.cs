@@ -4,7 +4,7 @@ using Blater.Results;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
-public class BlaterTwoFactorRoleStoreEndPoints(BlaterHttpClient client) : IBlaterAuthTwoFactorStore
+public class BlaterAuthTwoFactorStoreEndPoints(BlaterHttpClient client) : IBlaterAuthTwoFactorStore
 {
     private static string Endpoint => "/v1/Auth/2fa";
     

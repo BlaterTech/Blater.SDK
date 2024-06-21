@@ -5,7 +5,7 @@ using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterTwoFactorRoleRepositoryEndPoints(BlaterTwoFactorRoleStoreEndPoints storeEndPoints) : IBlaterAuthTwoFactorRepository
+public class BlaterAuthTwoFactorRepositoryEndPoints(BlaterAuthTwoFactorStoreEndPoints storeEndPoints) : IBlaterAuthTwoFactorRepository
 {
     
     public async Task<BlaterUser> EnableTwoFactor(BlaterUser user, string id, string secret)
