@@ -1,15 +1,18 @@
 ﻿using Blater.Exceptions;
 using Blater.Interfaces.BlaterAuthentication.Repositories;
 using Blater.Models.User;
+using Blater.SDK.Contracts.Authentication.Request;
+using Blater.SDK.Contracts.Common.Request;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
+using IBlaterAuthLoginRepository = Blater.SDK.Interfaces.IBlaterAuthLoginRepository;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
 public class BlaterAuthLoginRepositoryEndPoints(BlaterAuthLoginStoreEndPoints storeEndPoints) : IBlaterAuthLoginRepository
 {
-    public async Task<string> LoginLocal(string email, string password)
+    public async Task<string> LoginLocal(AuthRequest request)
     {
-        var result = await storeEndPoints.LoginLocal(email, password);
+        var result = await storeEndPoints.LoginLocal(request);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -18,9 +21,9 @@ public class BlaterAuthLoginRepositoryEndPoints(BlaterAuthLoginStoreEndPoints st
         return response;
     }
 
-    public async Task<BlaterUser> Register(string email, string password, string name)
+    public async Task<BlaterUser> Register(RegisterBlaterUserRequest request)
     {
-        var result = await storeEndPoints.Register(email, password, name);
+        var result = await storeEndPoints.Register(request);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
