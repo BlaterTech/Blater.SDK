@@ -39,40 +39,11 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
         return model;
     }
     
-    public async Task<T?> FindOne(string partition, Expression<Func<T, bool>> predicate)
-    {
-        var query = predicate.ExpressionToBlaterQuery();
-        
-        var result = await storeEndPoints.QueryOne(partition, query);
-        if (result.HandleErrors(out var errors, out var response))
-        {
-            throw new BlaterException(errors);
-        }
-        
-        var model = response.FromJson<T>();
-        return model;
-    }
-    
     public async Task<IReadOnlyList<T?>> FindMany(Expression<Func<T, bool>> predicate)
     {
         var query = predicate.ExpressionToBlaterQuery();
         
         var result = await storeEndPoints.Query(_partition, query);
-        if (result.HandleErrors(out var errors, out var response))
-        {
-            throw new BlaterException(errors);
-        }
-
-        var models = response.Select(x => x.FromJson<T>()).ToReadOnlyList();
-
-        return models;
-    }
-    
-    public async Task<IReadOnlyList<T?>> FindMany(string partition, Expression<Func<T, bool>> predicate)
-    {
-        var query = predicate.ExpressionToBlaterQuery();
-        
-        var result = await storeEndPoints.Query(partition, query);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -153,17 +124,6 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     public async Task<int> Count()
     {
         var result = await storeEndPoints.Count(_partition);
-        if (result.HandleErrors(out var errors, out var response))
-        {
-            throw new BlaterException(errors);
-        }
-        
-        return response;
-    }
-    
-    public async Task<int> Count(string partition)
-    {
-        var result = await storeEndPoints.Count(partition);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
