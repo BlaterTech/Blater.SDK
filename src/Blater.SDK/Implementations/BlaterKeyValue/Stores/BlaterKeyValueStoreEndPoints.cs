@@ -1,20 +1,38 @@
-﻿using Blater.Interfaces;
+﻿using Blater.Exceptions;
+using Blater.Interfaces;
+using Blater.JsonUtilities;
 using Blater.Results;
 
 namespace Blater.SDK.Implementations.BlaterKeyValue.Stores;
 
 public class BlaterKeyValueStoreEndPoints(BlaterHttpClient client) : IBlaterKeyValueStore
 {
-    private static string Endpoint => "/v1/KeyValue";
+    private static string Endpoint => "v1/KeyValue";
     
-    public Task<BlaterResult<TValue>> Get<TValue>(string key)
+    public async Task<BlaterResult<TValue>> Get<TValue>(string key)
     {
-        return client.Get<TValue>($"{Endpoint}/{key}");
+        var result = await client.Get<string>($"{Endpoint}/{key}");
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+
+        if (!response.TryParseJson<TValue>(out var handleResponse))
+        {
+            return BlaterErrors.NotFound;
+        }
+
+        if (handleResponse != null)
+        {
+            return handleResponse;
+        }
+
+        return BlaterErrors.NotFound;
     }
     
     public Task<BlaterResult<string>> Get(string key)
     {
-        return client.Get<string>($"{Endpoint}/{key}");
+        return client.GetString($"{Endpoint}/{key}");
     }
     
     public Task<BlaterResult<IReadOnlyList<string>>> Get()
@@ -24,17 +42,24 @@ public class BlaterKeyValueStoreEndPoints(BlaterHttpClient client) : IBlaterKeyV
     
     public Task<BlaterResult<bool>> Set<TValue>(string key, TValue value)
     {
-        if (value != null)
+        var json = value.ToJson();
+        if (string.IsNullOrWhiteSpace(json))
         {
-            return client.Post<bool>($"{Endpoint}/{key}", value);
+            throw new BlaterException("Value is nullable");
         }
         
-        return new Task<BlaterResult<bool>>(() => new BlaterResult<bool>(false));
+        return client.Post<bool>($"{Endpoint}/{key}", json);
     }
     
     public Task<BlaterResult<bool>> Set(string key, object value)
     {
-        return client.Post<bool>($"{Endpoint}/{key}", value);
+        var json = value.ToJson();
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            throw new BlaterException("Value is nullable");
+        }
+        
+        return client.Post<bool>($"{Endpoint}/{key}", json);
     }
     
     public Task<BlaterResult<bool>> Remove(string key)
