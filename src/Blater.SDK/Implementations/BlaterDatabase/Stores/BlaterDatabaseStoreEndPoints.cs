@@ -11,7 +11,7 @@ public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterData
     
     public Task<BlaterResult<string>> Get(BlaterId id)
     {
-        return client.Get<string>($"{Endpoint}/get/{id}");
+        return client.Get<string>($"{Endpoint}/{id}");
     }
     
     public Task<BlaterResult<string>> QueryOne(string partition, BlaterQuery query)
@@ -39,19 +39,42 @@ public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterData
         }
     }
     
-    public Task<BlaterResult<BlaterId>> Upsert(BlaterId id, string json)
+    public async Task<BlaterResult<BlaterId>> Upsert(BlaterId id, string json)
     {
-        return client.Put<BlaterId>($"{Endpoint}/upsert/{id}", json);
+        var result = await client.Put<string>($"{Endpoint}/upsert/{id}", json);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+
+        var blaterId = response.ToBlaterId();
+        return blaterId;
     }
     
-    public Task<BlaterResult<BlaterId>> Update(BlaterId id, string json)
+    public async Task<BlaterResult<BlaterId>> Update(BlaterId id, string json)
     {
-        return client.Put<BlaterId>($"{Endpoint}/update/{id}", json);
+        var result = await client.Put<string>($"{Endpoint}/update/{id}", json);
+        
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+
+        var blaterId = response.ToBlaterId();
+        return blaterId;
     }
     
-    public Task<BlaterResult<BlaterId>> Insert(BlaterId id, string json)
+    public async Task<BlaterResult<BlaterId>> Insert(BlaterId id, string json)
     {
-        return client.Post<BlaterId>($"{Endpoint}/insert/{id}", json);
+        var result = await client.Post<string>($"{Endpoint}/insert/{id}", json);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+
+        var blaterId = response.ToBlaterId();
+        return blaterId;
     }
     
     public Task<BlaterResult<bool>> Delete(BlaterId id)
@@ -61,12 +84,13 @@ public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterData
     
     public Task<BlaterResult<int>> Delete(List<BlaterId> ids)
     {
-        return client.Post<int>($"{Endpoint}/delete", ids);
+        var stringIds = ids.Select(x => x.ToString());
+        return client.Post<int>($"{Endpoint}/delete", stringIds);
     }
     
     public Task<BlaterResult<int>> Delete(BlaterQuery query)
     {
-        return client.Post<int>($"{Endpoint}/delete", query);
+        return client.Post<int>($"{Endpoint}/delete/query", query);
     }
     
     public Task<BlaterResult<int>> Count(string partition)

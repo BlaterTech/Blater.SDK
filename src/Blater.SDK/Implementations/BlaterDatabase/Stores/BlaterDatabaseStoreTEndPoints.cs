@@ -34,14 +34,17 @@ public class BlaterDatabaseStoreTEndPoints<T>(BlaterDatabaseStoreEndPoints store
             return errors;
         }
 
-        var model = response.FromJson<T>();
+        if (!response.TryParseJson<T>(out var value))
+        {
+            return BlaterErrors.JsonSerializationError("Error in deserialize json");
+        }
 
-        if (model == null)
+        if (value == null)
         {
             return BlaterErrors.NotFound;
         }
         
-        return model;
+        return value;
     }
 
     public async Task<BlaterResult<T>> FindOne(BlaterQuery query)
