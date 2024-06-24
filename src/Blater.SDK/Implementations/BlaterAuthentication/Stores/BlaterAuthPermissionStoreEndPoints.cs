@@ -9,14 +9,15 @@ public class BlaterAuthPermissionStoreEndPoints(BlaterHttpClient client) : IBlat
 {
     private static string Endpoint => "/v1/Permission";
     
-    public Task<BlaterResult<BlaterPermission>> Create(BlaterPermission permission)
+    public async Task<BlaterResult<BlaterPermission>> Create(BlaterPermission permission)
     {
-        return client.Post<BlaterPermission>($"{Endpoint}/", permission);
+        var result = await client.Post<BlaterPermission>($"{Endpoint}", permission);
+        return result;
     }
     
     public Task<BlaterResult<BlaterPermission>> Update(BlaterPermission permission)
     {
-        return client.Put<BlaterPermission>($"{Endpoint}/", permission);
+        return client.Put<BlaterPermission>($"{Endpoint}", permission);
     }
     
     public Task<BlaterResult<bool>> Delete(BlaterPermission permission)
@@ -36,7 +37,7 @@ public class BlaterAuthPermissionStoreEndPoints(BlaterHttpClient client) : IBlat
     
     public Task<BlaterResult<IReadOnlyList<BlaterPermission>>> GetAll()
     {
-        return client.Get<IReadOnlyList<BlaterPermission>>($"{Endpoint}/");
+        return client.Get<IReadOnlyList<BlaterPermission>>($"{Endpoint}");
     }
     
     public Task<BlaterResult<BlaterPermission>> GetById(BlaterId id)

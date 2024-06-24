@@ -15,7 +15,7 @@ public class BlaterAuthPermissionRoleStoreEndPoints(BlaterHttpClient client) : I
     
     public Task<BlaterResult<BlaterRole>> AddToRole(string roleName, string permissionName)
     {
-        return client.Post<BlaterRole>($"{Endpoint}/add-to-role/{roleName}/{permissionName}");
+        return client.Post<BlaterRole>($"{Endpoint}/add-to-role-with-name/{roleName}/{permissionName}");
     }
     
     public Task<BlaterResult<BlaterRole>> RemoveFromRole(BlaterRole role, BlaterPermission permission)
