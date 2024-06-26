@@ -8,7 +8,7 @@ using Blater.Results;
 
 namespace Blater.SDK.Implementations.BlaterDatabase.Stores;
 
-public class BlaterDatabaseStoreTEndPoints<T>(BlaterDatabaseStoreEndPoints storeEndPoints)
+public class BlaterDatabaseStoreTEndPoints<T>(IBlaterDatabaseStore storeEndPoints)
     : IBlaterDatabaseStoreT<T>
     where T : BaseDataModel
 {
