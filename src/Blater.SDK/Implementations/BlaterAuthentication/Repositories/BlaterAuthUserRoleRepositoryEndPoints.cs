@@ -1,11 +1,12 @@
 ﻿using Blater.Exceptions;
 using Blater.Interfaces.BlaterAuthentication.Repositories;
+using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthUserRoleRepositoryEndPoints(BlaterAuthUserRoleStoreEndPoints storeEndPoints) : IBlaterAuthUserRoleRepository
+public class BlaterAuthUserRoleRepositoryEndPoints(IBlaterAuthUserRoleStore storeEndPoints) : IBlaterAuthUserRoleRepository
 {
     public async Task<BlaterUser> AddToRole(string userId, string roleName)
     {
@@ -102,23 +103,6 @@ public class BlaterAuthUserRoleRepositoryEndPoints(BlaterAuthUserRoleStoreEndPoi
     public async Task<IReadOnlyList<BlaterRole>> GetRoles(BlaterUser user)
     {
         var result = await storeEndPoints.GetRoles(user);
-        
-        if (result.HandleErrors(out var errors, out var response))
-        {
-            throw new BlaterException(errors);
-        }
-        
-        if (response == null)
-        {
-            throw new BlaterException("Error while getting roles");
-        }
-        
-        return response;
-    }
-    
-    public async Task<IReadOnlyList<string>> GetRoleNames(BlaterUser user)
-    {
-        var result = await storeEndPoints.GetRoleNames(user);
         
         if (result.HandleErrors(out var errors, out var response))
         {

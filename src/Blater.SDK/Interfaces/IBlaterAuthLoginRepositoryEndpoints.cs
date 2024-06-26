@@ -4,7 +4,7 @@ using Blater.SDK.Contracts.Common.Request;
 
 namespace Blater.SDK.Interfaces;
 
-public interface IBlaterAuthLoginRepository
+public interface IBlaterAuthLoginRepositoryEndpoints
 {
     Task<string> LoginLocal(AuthRequest request);
     Task<BlaterUser> Register(RegisterBlaterUserRequest request);

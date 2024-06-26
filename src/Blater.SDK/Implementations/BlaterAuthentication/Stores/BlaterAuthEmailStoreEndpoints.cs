@@ -1,11 +1,11 @@
 ﻿using Blater.Models.User;
 using Blater.Results;
 using Blater.SDK.Contracts.Common.Request;
-using IBlaterAuthEmailStore = Blater.SDK.Interfaces.IBlaterAuthEmailStore;
+using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
-public class BlaterAuthEmailStoreEndPoints(BlaterHttpClient client) : IBlaterAuthEmailStore
+public class BlaterAuthEmailStoreEndpoints(BlaterHttpClient client) : IBlaterAuthEmailStoreEndpoints
 {
     private static string Endpoint => "/v1/Auth";
     

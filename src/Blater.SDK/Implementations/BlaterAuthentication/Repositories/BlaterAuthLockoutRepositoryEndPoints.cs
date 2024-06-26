@@ -1,11 +1,12 @@
 ﻿using Blater.Exceptions;
 using Blater.Interfaces.BlaterAuthentication.Repositories;
+using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthLockoutRepositoryEndPoints(BlaterAuthLockoutStoreEndPoints storeEndPoints) : IBlaterAuthLockoutRepository
+public class BlaterAuthLockoutRepositoryEndPoints(IBlaterAuthLockoutStore storeEndPoints) : IBlaterAuthLockoutRepository
 {
     public async Task<BlaterUser> SetLockoutEndDate(BlaterUser user, DateTimeOffset? lockoutEnd)
     {

@@ -1,11 +1,12 @@
 ﻿using Blater.Exceptions;
 using Blater.Interfaces.BlaterAuthentication.Repositories;
+using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthTwoFactorRepositoryEndPoints(BlaterAuthTwoFactorStoreEndPoints storeEndPoints) : IBlaterAuthTwoFactorRepository
+public class BlaterAuthTwoFactorRepositoryEndPoints(IBlaterAuthTwoFactorStore storeEndPoints) : IBlaterAuthTwoFactorRepository
 {
     
     public async Task<BlaterUser> EnableTwoFactor(BlaterUser user, string id, string secret)

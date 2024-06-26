@@ -2,11 +2,11 @@
 using Blater.Results;
 using Blater.SDK.Contracts.Authentication.Request;
 using Blater.SDK.Contracts.Common.Request;
-using IBlaterAuthLoginStore = Blater.SDK.Interfaces.IBlaterAuthLoginStore;
+using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
-public class BlaterAuthLoginStoreEndPoints(BlaterHttpClient client) : IBlaterAuthLoginStore
+public class BlaterAuthLoginStoreEndpoints(BlaterHttpClient client) : IBlaterAuthLoginStoreEndpoints
 {
     private static string Endpoint => "/v1/Auth/login";
 
@@ -39,4 +39,4 @@ public class BlaterAuthLoginStoreEndPoints(BlaterHttpClient client) : IBlaterAut
     {
         return client.Get<BlaterUser>($"{Endpoint}/find-by-login/{loginProvider}/{providerKey}");
     }
-}
+}   

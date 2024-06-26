@@ -3,15 +3,15 @@ using Blater.Models.User;
 using Blater.SDK.Contracts.Authentication.Request;
 using Blater.SDK.Contracts.Common.Request;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
-using IBlaterAuthLoginRepository = Blater.SDK.Interfaces.IBlaterAuthLoginRepository;
+using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthLoginRepositoryEndPoints(BlaterAuthLoginStoreEndPoints storeEndPoints) : IBlaterAuthLoginRepository
+public class BlaterAuthLoginRepositoryEndpoints(IBlaterAuthLoginStoreEndpoints storeEndpointsEndPoints) : IBlaterAuthLoginRepositoryEndpoints
 {
     public async Task<string> LoginLocal(AuthRequest request)
     {
-        var result = await storeEndPoints.LoginLocal(request);
+        var result = await storeEndpointsEndPoints.LoginLocal(request);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -22,7 +22,7 @@ public class BlaterAuthLoginRepositoryEndPoints(BlaterAuthLoginStoreEndPoints st
 
     public async Task<BlaterUser> Register(RegisterBlaterUserRequest request)
     {
-        var result = await storeEndPoints.Register(request);
+        var result = await storeEndpointsEndPoints.Register(request);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -33,7 +33,7 @@ public class BlaterAuthLoginRepositoryEndPoints(BlaterAuthLoginStoreEndPoints st
 
     public async Task<BlaterUser> AddLogin(BlaterUser user, BlaterLoginInfo login)
     {
-        var result = await storeEndPoints.AddLogin(user, login);
+        var result = await storeEndpointsEndPoints.AddLogin(user, login);
         
         if (result.HandleErrors(out var errors, out var response))
         {
@@ -50,7 +50,7 @@ public class BlaterAuthLoginRepositoryEndPoints(BlaterAuthLoginStoreEndPoints st
     
     public async Task<BlaterUser> RemoveLogin(BlaterUser user, string loginProvider, string providerKey)
     {
-        var result = await storeEndPoints.RemoveLogin(user, loginProvider, providerKey);
+        var result = await storeEndpointsEndPoints.RemoveLogin(user, loginProvider, providerKey);
         
         if (result.HandleErrors(out var errors, out var response))
         {
@@ -67,7 +67,7 @@ public class BlaterAuthLoginRepositoryEndPoints(BlaterAuthLoginStoreEndPoints st
     
     public async Task<IReadOnlyList<BlaterLoginInfo>> GetLogins(BlaterId id)
     {
-        var result = await storeEndPoints.GetLogins(id);
+        var result = await storeEndpointsEndPoints.GetLogins(id);
         
         if (result.HandleErrors(out var errors, out var response))
         {
@@ -84,7 +84,7 @@ public class BlaterAuthLoginRepositoryEndPoints(BlaterAuthLoginStoreEndPoints st
     
     public async Task<BlaterUser> FindByLogin(string loginProvider, string providerKey)
     {
-        var result = await storeEndPoints.FindByLogin(loginProvider, providerKey);
+        var result = await storeEndpointsEndPoints.FindByLogin(loginProvider, providerKey);
         
         if (result.HandleErrors(out var errors, out var response))
         {

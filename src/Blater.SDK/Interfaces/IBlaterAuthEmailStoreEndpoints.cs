@@ -4,7 +4,7 @@ using Blater.SDK.Contracts.Common.Request;
 
 namespace Blater.SDK.Interfaces;
 
-public interface IBlaterAuthEmailStore
+public interface IBlaterAuthEmailStoreEndpoints
 {
     Task<BlaterResult<BlaterUser>> FindByEmail(string email);
     Task<BlaterResult<bool>> ResetEmail(string email, ResetBlaterUserEmailRequest request);

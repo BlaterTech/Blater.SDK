@@ -2,15 +2,15 @@
 using Blater.Models.User;
 using Blater.SDK.Contracts.Common.Request;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
-using IBlaterAuthEmailRepository = Blater.SDK.Interfaces.IBlaterAuthEmailRepository;
+using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthEmailRepositoryEndPoints(BlaterAuthEmailStoreEndPoints storeEndPoints) : IBlaterAuthEmailRepository
+public class BlaterAuthEmailRepositoryEndpoints(IBlaterAuthEmailStoreEndpoints storeEndpointsEndPoints) : IBlaterAuthEmailRepositoryEndpoints
 {
     public async Task<BlaterUser> FindByEmail(string email)
     {
-        var result = await storeEndPoints.FindByEmail(email);
+        var result = await storeEndpointsEndPoints.FindByEmail(email);
         
         if (result.HandleErrors(out var errors, out var response))
         {
@@ -27,7 +27,7 @@ public class BlaterAuthEmailRepositoryEndPoints(BlaterAuthEmailStoreEndPoints st
 
     public async Task<bool> ResetEmail(string email, ResetBlaterUserEmailRequest request)
     {
-        var result = await storeEndPoints.ResetEmail(email, request);
+        var result = await storeEndpointsEndPoints.ResetEmail(email, request);
         
         if (result.HandleErrors(out var errors, out var response))
         {
@@ -39,7 +39,7 @@ public class BlaterAuthEmailRepositoryEndPoints(BlaterAuthEmailStoreEndPoints st
 
     public async Task<BlaterUser> SetEmailConfirmed(BlaterUser user)
     {
-        var result = await storeEndPoints.SetEmailConfirmed(user);
+        var result = await storeEndpointsEndPoints.SetEmailConfirmed(user);
         
         if (result.HandleErrors(out var errors, out var response))
         {

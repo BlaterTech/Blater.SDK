@@ -1,13 +1,14 @@
 ﻿using System.Linq.Expressions;
 using Blater.Exceptions;
 using Blater.Interfaces.BlaterAuthentication.Repositories;
+using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.Query.Extensions;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthPermissionRepositoryEndPoints(BlaterAuthPermissionStoreEndPoints storeEndPoints) : IBlaterAuthPermissionRepository
+public class BlaterAuthPermissionRepositoryEndPoints(IBlaterAuthPermissionStore storeEndPoints) : IBlaterAuthPermissionRepository
 {
     public async Task<BlaterPermission> Create(BlaterPermission permission)
     {

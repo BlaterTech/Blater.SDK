@@ -1,46 +1,48 @@
-/*using Blater.Hubs;
-using Blater.SignalR.SourceGenerator;
-using Blater.Utilities;
-using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Configuration;
+using Blater.Interfaces;
+using Blater.Interfaces.BlaterAuthentication.Repositories;
+using Blater.Interfaces.BlaterAuthentication.Stores;
+using Blater.SDK.Implementations.BlaterAuthentication.Repositories;
+using Blater.SDK.Implementations.BlaterAuthentication.Stores;
+using Blater.SDK.Implementations.BlaterDatabase.Stores;
+using Blater.SDK.Implementations.BlaterKeyValue.Stores;
+using Blater.SDK.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Blater.SDK.Extensions;
 
 public static class BlaterServiceExtensions
 {
-    internal static HubConnection HubConnection = null!;
-    
     public static void AddBlaterServices(this IServiceCollection services)
     {
-        var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+        services.AddHttpClient<BlaterHttpClient>((client) =>
+        {
+            client.BaseAddress = new Uri("http://localhost:5296");
+        });
+
+        services.AddScoped<IBlaterDatabaseStore, BlaterDatabaseStoreEndPoints>();
+        services.AddScoped<IBlaterKeyValueStore, BlaterKeyValueStoreEndPoints>();
+        services.AddScoped(typeof(IBlaterDatabaseStoreT<>), typeof(BlaterDatabaseStoreTEndPoints<>));
         
-        var blaterSection = configuration.GetSection("Blater");
-        //TODO QueryOne TenantId, ClientSecret, ClientId, Region, and Environment from configuration
-        //If ClientSecret is not provided, the user must authenticate manually
+        services.AddScoped<IBlaterAuthEmailStoreEndpoints, BlaterAuthEmailStoreEndpoints>();
+        services.AddScoped<IBlaterAuthLoginStoreEndpoints, BlaterAuthLoginStoreEndpoints>();
+        services.AddScoped<IBlaterAuthLockoutStore, BlaterAuthLockoutStoreEndPoints>();
+        services.AddScoped<IBlaterAuthTwoFactorStore, BlaterAuthTwoFactorStoreEndPoints>();
+//services.AddScoped<IBlaterAuthPasswordStore, password>();
+        services.AddScoped<IBlaterAuthPermissionRoleStore, BlaterAuthPermissionRoleStoreEndPoints>();
+        services.AddScoped<IBlaterAuthPermissionStore, BlaterAuthPermissionStoreEndPoints>();
+        services.AddScoped<IBlaterAuthRoleStore, BlaterAuthRoleStoreEndPoints>();
+        services.AddScoped<IBlaterAuthUserRoleStore, BlaterAuthUserRoleStoreEndPoints>();
+        services.AddScoped<IBlaterAuthUserPermissionStore, BlaterAuthUserPermissionStoreEndPoints>();
         
-        HubConnection = new HubConnectionBuilder()
-                       .WithUrl("http://localhost:5136/BlaterEndpoint", options => options.Headers.Add("TenantId", SequentialGuidGenerator.NewGuid().ToString()))
-                       .WithStatefulReconnect()
-                       .WithKeepAliveInterval(TimeSpan.FromSeconds(30))
-                       .Build();
-        
-        services.AddHostedService<StartBlaterService>();
-        
-        var authHub = HubConnection.CreateHubProxy<IBlaterDatabaseHub>();
-        var helloWorld = HubConnection.CreateHubProxy<IHelloWorldHub>();
-
-        helloWorld.TestModel("asd", "asda");
-        var testModel = new TestModel();
-        //helloWorld.TestModel(testModel);
-
-
-
-
-        //services.AddSingleton<IBlaterAuth>(blaterHub);
-
-        //services.AddTransient(typeof(IBlaterDatabaseRepository<>), typeof(BlaterDatabaseRepository<>));
-        //services.AddScoped<IBlaterQueue, BlaterQueue>();
-        //services.AddScoped<IBlaterAuthEndpoint, BlaterAuthEndpoint>();
+        services.AddScoped<IBlaterAuthEmailRepositoryEndpoints, BlaterAuthEmailRepositoryEndpoints>();
+        services.AddScoped<IBlaterAuthLoginRepositoryEndpoints, BlaterAuthLoginRepositoryEndpoints>();
+        services.AddScoped<IBlaterAuthLockoutRepository, BlaterAuthLockoutRepositoryEndPoints>();
+        services.AddScoped<IBlaterAuthTwoFactorRepository, BlaterAuthTwoFactorRepositoryEndPoints>();
+//services.AddScoped<IBlaterAuthPasswordRepository, BlaterAuthPasswordRepository>();
+        services.AddScoped<IBlaterAuthPermissionRoleRepository, BlaterAuthPermissionRoleRepositoryEndPoints>();
+        services.AddScoped<IBlaterAuthPermissionRepository, BlaterAuthPermissionRepositoryEndPoints>();
+        services.AddScoped<IBlaterAuthRoleRepository, BlaterAuthRoleRepositoryEndPoints>();
+        services.AddScoped<IBlaterAuthUserRoleRepository, BlaterAuthUserRoleRepositoryEndPoints>();
+        services.AddScoped<IBlaterAuthUserPermissionRepository, BlaterAuthUserPermissionsRepositoryEndPoints>();
     }
-}*/
+}

@@ -1,11 +1,12 @@
 ﻿using Blater.Exceptions;
 using Blater.Interfaces.BlaterAuthentication.Repositories;
+using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthPermissionRoleRepositoryEndPoints(BlaterAuthPermissionRoleStoreEndPoints storeEndPoints) : IBlaterAuthPermissionRoleRepository
+public class BlaterAuthPermissionRoleRepositoryEndPoints(IBlaterAuthPermissionRoleStore storeEndPoints) : IBlaterAuthPermissionRoleRepository
 {
     public async Task<BlaterRole> AddToRole(BlaterRole role, BlaterPermission permission)
     {

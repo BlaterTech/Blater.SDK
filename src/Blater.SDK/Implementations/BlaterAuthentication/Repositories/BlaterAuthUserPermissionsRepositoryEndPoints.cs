@@ -1,11 +1,12 @@
 ﻿using Blater.Exceptions;
 using Blater.Interfaces.BlaterAuthentication.Repositories;
+using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
-public class BlaterAuthUserPermissionsRepositoryEndPoints(BlaterAuthUserPermissionStoreEndPoints storeEndPoints) : IBlaterAuthUserPermissionRepository
+public class BlaterAuthUserPermissionsRepositoryEndPoints(IBlaterAuthUserPermissionStore storeEndPoints) : IBlaterAuthUserPermissionRepository
 {
     public async Task<bool> IsInPermission(string userId, string permissionName)
     {
