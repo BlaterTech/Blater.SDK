@@ -1,7 +1,6 @@
 ﻿using Blater.Exceptions;
 using Blater.Interfaces.BlaterAuthentication.Repositories;
 using Blater.Interfaces.BlaterAuthentication.Stores;
-using Blater.Results;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 
