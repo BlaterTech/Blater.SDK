@@ -2,6 +2,7 @@
 using Blater.Exceptions;
 using Blater.Interfaces;
 using Blater.JsonUtilities;
+using Blater.Models.Bases;
 using Blater.Query.Extensions;
 using Blater.Query.Interfaces;
 using Blater.SDK.Implementations.BlaterDatabase.Stores;
