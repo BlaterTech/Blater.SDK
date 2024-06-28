@@ -1,6 +1,5 @@
 ﻿using Blater.Interfaces.BlaterAuthentication;
 using Blater.Models.User;
-using Blater.Query.Models;
 using Blater.Results;
 
 namespace Blater.SDK.Implementations.BlaterAuthentication;
