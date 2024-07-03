@@ -1,9 +1,9 @@
-﻿using Blater.Interfaces.BlaterAuthentication;
+﻿using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.Query.Models;
 using Blater.Results;
 
-namespace Blater.SDK.Implementations.BlaterAuthentication;
+namespace Blater.SDK.Implementations.BlaterAuthentication.Stores;
 
 public class BlaterAuthRoleStoreEndPoints(BlaterHttpClient client) : IBlaterAuthRoleStore
 {
@@ -22,7 +22,7 @@ public class BlaterAuthRoleStoreEndPoints(BlaterHttpClient client) : IBlaterAuth
     
     public Task<BlaterResult<bool>> Delete(BlaterId id)
     {
-        return client.Post<bool>($"{Endpoint}/delete", id);
+        return client.Delete<bool>($"{Endpoint}/{id}");
     }
     
     public Task<BlaterResult<bool>> Delete(BlaterQuery query)
@@ -32,7 +32,7 @@ public class BlaterAuthRoleStoreEndPoints(BlaterHttpClient client) : IBlaterAuth
     
     public Task<BlaterResult<bool>> Delete(BlaterRole role)
     {
-        return client.Post<bool>($"{Endpoint}/delete-by-id/{role.Id}");
+        return client.Post<bool>($"{Endpoint}/delete", role);
     }
     
     public Task<BlaterResult<BlaterRole>> GetById(BlaterId id)
