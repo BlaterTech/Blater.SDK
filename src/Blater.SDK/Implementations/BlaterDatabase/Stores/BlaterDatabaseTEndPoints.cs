@@ -145,6 +145,15 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
 
         return obj;
     }
+    
+    public Task<BlaterResult<T>> Upsert(T obj)
+    {
+        if (obj.Id == BlaterId.Empty)
+        {
+            obj.Id = BlaterId.New(Partition);
+        }
+        return Upsert(obj.Id, obj);
+    }
 
     public async Task<BlaterResult<T>> Update(BlaterId id, T obj)
     {
