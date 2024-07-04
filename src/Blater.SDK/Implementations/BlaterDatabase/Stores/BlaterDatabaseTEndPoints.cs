@@ -131,35 +131,16 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
 
     #region Upsert/Update/Insert
 
-    public async Task<BlaterResult<T>> Upsert(BlaterId id, T obj)
-    {
-        ValidatePartition(id);
-        
-        var result = await endPoints.Upsert(id, obj.ToJson()!);
-        if (result.HandleErrors(out var errors, out var response))
-        {
-            return errors;
-        }
-
-        obj.Id = response;
-
-        return obj;
-    }
-    
-    public Task<BlaterResult<T>> Upsert(T obj)
+    public async Task<BlaterResult<T>> Upsert(T obj)
     {
         if (obj.Id == BlaterId.Empty)
         {
             obj.Id = BlaterId.New(Partition);
         }
-        return Upsert(obj.Id, obj);
-    }
-
-    public async Task<BlaterResult<T>> Update(BlaterId id, T obj)
-    {
-        ValidatePartition(id);
         
-        var result = await endPoints.Update(id, obj.ToJson()!);
+        ValidatePartition(obj.Id);
+        
+        var result = await endPoints.Upsert(obj.Id, obj.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -170,11 +151,18 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         return obj;
     }
 
-    public async Task<BlaterResult<T>> Insert(BlaterId id, T obj)
+    public async Task<BlaterResult<T>> Update( T obj)
     {
-        ValidatePartition(id);
+        ValidatePartition(obj.Id);
         
-        var result = await endPoints.Insert(id, obj.ToJson()!);
+        var json = obj.ToJson();
+        
+        if (json == null)
+        {
+            return BlaterErrors.JsonSerializationError("Error in serialize json");
+        }
+        
+        var result = await endPoints.Update(obj.Id, json);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -185,10 +173,31 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         return obj;
     }
 
-    public Task<BlaterResult<T>> Insert(T obj)
+    public async Task<BlaterResult<T>> Insert(T obj)
     {
+        if (obj.Id != BlaterId.Empty)
+        {
+            return BlaterErrors.InvalidOperation("Id must be empty");
+        }
+        
         obj.Id = BlaterId.New(Partition);
-        return Insert(obj.Id, obj);
+        
+        var json = obj.ToJson();
+        
+        if (json == null)
+        {
+            return BlaterErrors.JsonSerializationError("Error in serialize json");
+        }
+        
+        var result = await endPoints.Insert(obj.Id, json);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+
+        obj.Id = response;
+
+        return obj;
     }
 
     #endregion
