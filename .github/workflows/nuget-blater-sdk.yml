@@ -10,14 +10,15 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Core
       uses: actions/checkout@v4
       with:
-        name: BlaterTech/Blater
+        repository: BlaterTech/Blater
         path: blater/Blater
+        ref: main
     - name: Checkout SDK
       uses: actions/checkout@v4
       with:
