@@ -40,7 +40,6 @@ jobs:
       working-directory: blater/Blater.SDK
       run: |
         export NUGET_VERSION=$(date --utc '+%Y.%m.%d.%H%M' | sed 's/\.\(0*\)/./g')
-        dotnet pack --output nupkgs -p:PackageVersion=$NUGET_VERSION src/Blater.SDK.sln
+        dotnet pack --output /home/runner/work/Blater.SDK/Blater.SDK/blater/nupkgs -p:PackageVersion=$NUGET_VERSION src/Blater.SDK.sln
     - name: Push
-      working-directory: blater/Blater.SDK
-      run: dotnet nuget push nupkgs/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+      run: dotnet nuget push /home/runner/work/Blater.SDK/Blater.SDK/blater/nupkgs/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
