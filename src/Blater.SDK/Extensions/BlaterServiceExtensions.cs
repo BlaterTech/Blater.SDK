@@ -23,7 +23,7 @@ public static class BlaterServiceExtensions
             BlaterHttpClient.Schema = "Bearer";
             client.BaseAddress = new Uri("http://localhost:5296");
         });
-        
+
         services.AddBlaterDatabase();
         services.AddBlaterManagement();
         services.AddBlaterKeyValue();

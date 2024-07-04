@@ -7,7 +7,7 @@ namespace Blater.SDK.Implementations.BlaterAuthentication.Stores;
 public class BlaterAuthPasswordStoreEndPoints(BlaterHttpClient client) : IBlaterAuthPasswordStore
 {
     private static string Endpoint => "/v1/Auth";
-    
+
     public Task<BlaterResult<bool>> ResetPassword(string email, string oldPassword, string newPassword)
     {
         var request = new ResetBlaterUserPasswordRequest

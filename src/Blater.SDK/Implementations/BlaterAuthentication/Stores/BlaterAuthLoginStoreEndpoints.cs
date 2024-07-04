@@ -24,7 +24,7 @@ public class BlaterAuthLoginStoreEndpoints(BlaterHttpClient client) : IBlaterAut
         }
 
         BlaterHttpClient.Token = response;
-        
+
         return response;
     }
 
@@ -37,19 +37,19 @@ public class BlaterAuthLoginStoreEndpoints(BlaterHttpClient client) : IBlaterAut
     {
         return client.Post<BlaterUser>($"{Endpoint}/add-login/{user.Id}", login);
     }
-    
+
     public Task<BlaterResult<BlaterUser>> RemoveLogin(BlaterUser user, string loginProvider, string providerKey)
     {
         return client.Delete<BlaterUser>($"{Endpoint}/remove-login/{user.Id}/{loginProvider}/{providerKey}");
     }
-    
+
     public Task<BlaterResult<IReadOnlyList<BlaterLoginInfo>>> GetLogins(BlaterId id)
     {
         return client.Get<IReadOnlyList<BlaterLoginInfo>>($"{Endpoint}/get-logins/{id}");
     }
-    
+
     public Task<BlaterResult<BlaterUser>> FindByLogin(string loginProvider, string providerKey)
     {
         return client.Get<BlaterUser>($"{Endpoint}/find-by-login/{loginProvider}/{providerKey}");
     }
-}   
+}

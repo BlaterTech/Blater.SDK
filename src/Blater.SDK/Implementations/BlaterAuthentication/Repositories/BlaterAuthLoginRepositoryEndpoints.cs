@@ -33,68 +33,68 @@ public class BlaterAuthLoginRepositoryEndpoints(IBlaterAuthLoginStoreEndpoints s
     public async Task<BlaterUser> AddLogin(BlaterUser user, BlaterLoginInfo login)
     {
         var result = await storeEndpointsEndPoints.AddLogin(user, login);
-        
+
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
         }
-        
+
         if (response == null)
         {
             throw new BlaterException("Error while adding login");
         }
-        
+
         return response;
     }
-    
+
     public async Task<BlaterUser> RemoveLogin(BlaterUser user, string loginProvider, string providerKey)
     {
         var result = await storeEndpointsEndPoints.RemoveLogin(user, loginProvider, providerKey);
-        
+
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
         }
-        
+
         if (response == null)
         {
             throw new BlaterException("Error while removing login");
         }
-        
+
         return response;
     }
-    
+
     public async Task<IReadOnlyList<BlaterLoginInfo>> GetLogins(BlaterId id)
     {
         var result = await storeEndpointsEndPoints.GetLogins(id);
-        
+
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
         }
-        
+
         if (response == null)
         {
             throw new BlaterException("Error while getting logins");
         }
-        
+
         return response;
     }
-    
+
     public async Task<BlaterUser> FindByLogin(string loginProvider, string providerKey)
     {
         var result = await storeEndpointsEndPoints.FindByLogin(loginProvider, providerKey);
-        
+
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
         }
-        
+
         if (response == null)
         {
             throw new BlaterException("Error while finding user by login");
         }
-        
+
         return response;
     }
 }

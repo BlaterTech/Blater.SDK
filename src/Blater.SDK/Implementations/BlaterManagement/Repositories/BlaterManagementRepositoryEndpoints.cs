@@ -4,9 +4,8 @@ using Blater.SDK.Interfaces;
 namespace Blater.SDK.Implementations.BlaterManagement.Repositories;
 
 public class BlaterManagementRepositoryEndpoints(IBlaterManagementStoreEndpoints storeEndPoints)
-: IBlaterManagementRepositoryEndpoints
+    : IBlaterManagementRepositoryEndpoints
 {
-
     public async Task<string> CreateDatabase(string databaseName)
     {
         var result = await storeEndPoints.CreateDatabase(databaseName);

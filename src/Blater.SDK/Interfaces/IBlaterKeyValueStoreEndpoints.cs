@@ -4,5 +4,4 @@ namespace Blater.SDK.Interfaces;
 
 public interface IBlaterKeyValueStoreEndpoints : IBlaterKeyValueStore
 {
-    
 }
