@@ -5,10 +5,9 @@
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
         <EnablePreviewFeatures>true</EnablePreviewFeatures>
-
-        <Version>1.0.0.0</Version>
+        
         <Authors>Blater</Authors>
-        <PackageLicenseUrl>https://github.com/BlaterTech/Blater/blob/main/LICENSE</PackageLicenseUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <AnalysisLevel>latest-all</AnalysisLevel>
@@ -33,8 +32,8 @@
         <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta09"
                           PrivateAssets="all" ExcludeAssets="runtime" />
     </ItemGroup>
-
+    
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Blater\src\Blater\Blater.csproj" />
+        <ProjectReference Include="..\..\..\Blater\src\Blater\Blater.csproj"/>
     </ItemGroup>
 </Project>
