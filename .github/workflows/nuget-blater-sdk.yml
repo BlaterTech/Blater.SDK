@@ -31,16 +31,16 @@ jobs:
       run: dotnet restore src/Blater.SDK.sln
       working-directory: blater/Blater.SDK
     - name: Build
-      run: dotnet build --no-restore src/Blater/Blater.SDK.csproj
+      run: dotnet build --no-restore src/Blater.SDK.sln
       working-directory: blater/Blater.SDK
     - name: Test
-      run: dotnet test --no-build --verbosity normal src/Blater/Blater.SDK.csproj
+      run: dotnet test --no-build --verbosity normal src/Blater.SDK.sln
       working-directory: blater/Blater.SDK
     - name: Pack
       working-directory: blater/Blater.SDK
       run: |
         export NUGET_VERSION=$(date --utc '+%Y.%m.%d.%H%M' | sed 's/\.\(0*\)/./g')
-        dotnet pack --output nupkgs -p:PackageVersion=$NUGET_VERSION src/Blater.SDK/Blater.SDK.csproj
+        dotnet pack --output nupkgs -p:PackageVersion=$NUGET_VERSION src/Blater.SDK.sln
     - name: Push
       working-directory: blater/Blater.SDK
       run: dotnet nuget push nupkgs/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
