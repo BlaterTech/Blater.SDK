@@ -28,7 +28,7 @@ jobs:
       with:
         dotnet-version: 9.0.x
     - name: Restore dependencies
-      run: dotnet restore src/Blater.SDK.sln
+      run: dotnet restore blater/src/Blater.SDK.sln
     - name: Build
       run: dotnet build --no-restore blater/src/Blater/Blater.SDK.csproj
     - name: Test
