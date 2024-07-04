@@ -1,11 +1,11 @@
 ﻿using Blater.Exceptions;
-using Blater.Interfaces;
 using Blater.Query.Models;
 using Blater.Results;
+using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterDatabase.Stores;
 
-public class BlaterDatabaseStoreEndPoints(BlaterHttpClient client) : IBlaterDatabaseStore
+public class BlaterDatabaseEndPoints(BlaterHttpClient client) : IBlaterDatabaseEndpoints
 {
     private static string Endpoint => "/v1/Database";
     

@@ -1,11 +1,10 @@
-﻿
-using Blater.Exceptions;
+﻿using Blater.Exceptions;
 using Blater.Interfaces;
-using Blater.SDK.Implementations.BlaterKeyValue.Stores;
+using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterKeyValue.Repositories;
 
-public class BlaterKeyValueRepositoryEndPoints(BlaterKeyValueStoreEndPoints storeEndPoints) 
+public class BlaterKeyValueRepositoryEndPoints(IBlaterKeyValueStoreEndpoints storeEndPoints) 
     : IBlaterKeyValueRepository
 {
     private static void ValidateKey(string key)

@@ -3,8 +3,12 @@ using Blater.Interfaces.BlaterAuthentication.Repositories;
 using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.SDK.Implementations.BlaterAuthentication.Repositories;
 using Blater.SDK.Implementations.BlaterAuthentication.Stores;
+using Blater.SDK.Implementations.BlaterDatabase.Repositories;
 using Blater.SDK.Implementations.BlaterDatabase.Stores;
+using Blater.SDK.Implementations.BlaterKeyValue.Repositories;
 using Blater.SDK.Implementations.BlaterKeyValue.Stores;
+using Blater.SDK.Implementations.BlaterManagement.Repositories;
+using Blater.SDK.Implementations.BlaterManagement.Stores;
 using Blater.SDK.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,15 +18,43 @@ public static class BlaterServiceExtensions
 {
     public static void AddBlaterServices(this IServiceCollection services)
     {
-        services.AddHttpClient<BlaterHttpClient>((client) =>
+        services.AddHttpClient<BlaterHttpClient>(client =>
         {
+            BlaterHttpClient.Schema = "Bearer";
             client.BaseAddress = new Uri("http://localhost:5296");
         });
-
-        services.AddScoped<IBlaterDatabaseStore, BlaterDatabaseStoreEndPoints>();
-        services.AddScoped<IBlaterKeyValueStore, BlaterKeyValueStoreEndPoints>();
-        services.AddScoped(typeof(IBlaterDatabaseStoreT<>), typeof(BlaterDatabaseStoreTEndPoints<>));
         
+        services.AddBlaterDatabase();
+        services.AddBlaterManagement();
+        services.AddBlaterKeyValue();
+        services.AddBlaterAuthStores();
+        services.AddBlaterAuthRepositories();
+    }
+
+    private static void AddBlaterDatabase(this IServiceCollection services)
+    {
+        services.AddScoped<IBlaterDatabaseEndpoints, BlaterDatabaseEndPoints>();
+        services.AddScoped(typeof(IBlaterDatabaseStoreTEndpoints<>), typeof(BlaterDatabaseTEndPoints<>));
+
+        services.AddScoped(typeof(IBlaterDatabaseRepository<>), typeof(BlaterDatabaseRepositoryEndPoints<>));
+    }
+
+    private static void AddBlaterManagement(this IServiceCollection services)
+    {
+        services.AddScoped<IBlaterManagementStoreEndpoints, BlaterManagementStoreEndpoints>();
+
+        services.AddScoped<IBlaterManagementRepositoryEndpoints, BlaterManagementRepositoryEndpoints>();
+    }
+
+    private static void AddBlaterKeyValue(this IServiceCollection services)
+    {
+        services.AddScoped<IBlaterKeyValueStoreEndpoints, BlaterKeyValueStoreEndPoints>();
+
+        services.AddScoped<IBlaterKeyValueRepository, BlaterKeyValueRepositoryEndPoints>();
+    }
+
+    private static void AddBlaterAuthStores(this IServiceCollection services)
+    {
         services.AddScoped<IBlaterAuthEmailStoreEndpoints, BlaterAuthEmailStoreEndpoints>();
         services.AddScoped<IBlaterAuthLoginStoreEndpoints, BlaterAuthLoginStoreEndpoints>();
         services.AddScoped<IBlaterAuthLockoutStore, BlaterAuthLockoutStoreEndPoints>();
@@ -33,7 +65,10 @@ public static class BlaterServiceExtensions
         services.AddScoped<IBlaterAuthRoleStore, BlaterAuthRoleStoreEndPoints>();
         services.AddScoped<IBlaterAuthUserRoleStore, BlaterAuthUserRoleStoreEndPoints>();
         services.AddScoped<IBlaterAuthUserPermissionStore, BlaterAuthUserPermissionStoreEndPoints>();
-        
+    }
+
+    private static void AddBlaterAuthRepositories(this IServiceCollection services)
+    {
         services.AddScoped<IBlaterAuthEmailRepositoryEndpoints, BlaterAuthEmailRepositoryEndpoints>();
         services.AddScoped<IBlaterAuthLoginRepositoryEndpoints, BlaterAuthLoginRepositoryEndpoints>();
         services.AddScoped<IBlaterAuthLockoutRepository, BlaterAuthLockoutRepositoryEndPoints>();

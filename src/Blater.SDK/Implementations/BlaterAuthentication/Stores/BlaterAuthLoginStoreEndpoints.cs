@@ -10,9 +10,22 @@ public class BlaterAuthLoginStoreEndpoints(BlaterHttpClient client) : IBlaterAut
 {
     private static string Endpoint => "/v1/Auth/login";
 
-    public Task<BlaterResult<string>> LoginLocal(AuthRequest request)
+    public async Task<BlaterResult<string>> LoginLocal(AuthRequest request)
     {
-        return client.Post<string>($"{Endpoint}/local", request);
+        var result = await client.Post<string>($"{Endpoint}/local", request);
+        if (result.HandleErrors(out var errors, out var response))
+        {
+            return errors;
+        }
+
+        if (string.IsNullOrWhiteSpace(response))
+        {
+            return BlaterErrors.NotFound;
+        }
+
+        BlaterHttpClient.Token = response;
+        
+        return response;
     }
 
     public Task<BlaterResult<BlaterUser>> Register(RegisterBlaterUserRequest request)

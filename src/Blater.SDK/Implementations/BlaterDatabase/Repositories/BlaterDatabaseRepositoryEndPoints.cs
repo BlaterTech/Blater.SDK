@@ -6,17 +6,19 @@ using Blater.Models.Bases;
 using Blater.Query.Extensions;
 using Blater.Query.Interfaces;
 using Blater.SDK.Implementations.BlaterDatabase.Stores;
+using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterDatabase.Repositories;
 
-public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints storeEndPoints) : IBlaterDatabaseRepository<T>
+public class BlaterDatabaseRepositoryEndPoints<T>(IBlaterDatabaseEndpoints endPoints) 
+    : IBlaterDatabaseRepository<T>
     where T : BaseDataModel
 {
     private readonly string _partition = typeof(T).FullName?.SanitizeString() ?? throw new BlaterException("Could not get the type name of the entity");
-
+    
     public async Task<T?> FindOne(BlaterId id)
     {
-        var result = await storeEndPoints.Get(id);
+        var result = await endPoints.Get(id);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -30,7 +32,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     {
         var query = predicate.ExpressionToBlaterQuery();
         
-        var result = await storeEndPoints.QueryOne(_partition, query);
+        var result = await endPoints.QueryOne(_partition, query);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -44,7 +46,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     {
         var query = predicate.ExpressionToBlaterQuery();
         
-        var result = await storeEndPoints.Query(_partition, query);
+        var result = await endPoints.Query(_partition, query);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -57,7 +59,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     
     public async Task<BlaterId> Upsert(T entity)
     {
-        var result = await storeEndPoints.Upsert(entity.Id, entity.ToJson()!);
+        var result = await endPoints.Upsert(entity.Id, entity.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -68,7 +70,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     
     public async Task<BlaterId> Insert(T entity)
     {
-        var result = await storeEndPoints.Insert(entity.Id, entity.ToJson()!);
+        var result = await endPoints.Insert(entity.Id, entity.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -79,7 +81,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     
     public async Task<BlaterId> Update(T entity)
     {
-        var result = await storeEndPoints.Update(entity.Id, entity.ToJson()!);
+        var result = await endPoints.Update(entity.Id, entity.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -90,7 +92,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     
     public async Task<bool> Delete(T entity)
     {
-        var result = await storeEndPoints.Delete(entity.Id);
+        var result = await endPoints.Delete(entity.Id);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -101,7 +103,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     
     public async Task<bool> Delete(BlaterId id)
     {
-        var result = await storeEndPoints.Delete(id);
+        var result = await endPoints.Delete(id);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -113,7 +115,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     public async Task<int> DeleteMany(Expression<Func<T, bool>> predicate)
     {
         var blaterQuery = predicate.ExpressionToBlaterQuery();
-        var result = await storeEndPoints.Delete(blaterQuery);
+        var result = await endPoints.Delete(blaterQuery);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -124,7 +126,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     
     public async Task<int> Count()
     {
-        var result = await storeEndPoints.Count(_partition);
+        var result = await endPoints.Count(_partition);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -136,7 +138,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     public async Task<int> Count(Expression<Func<T, bool>> predicate)
     {
         var blaterQuery = predicate.ExpressionToBlaterQuery();
-        var result = await storeEndPoints.Count(_partition, blaterQuery);
+        var result = await endPoints.Count(_partition, blaterQuery);
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
@@ -148,7 +150,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(BlaterDatabaseStoreEndPoints s
     public async IAsyncEnumerable<string> GetChangesQuery(Expression<Func<T, bool>> predicate)
     {
         var blaterQuery = predicate.ExpressionToBlaterQuery();
-        var result = storeEndPoints.WatchChangesQuery(_partition, blaterQuery);
+        var result = endPoints.WatchChangesQuery(_partition, blaterQuery);
 
 
         await foreach (var item in result)
