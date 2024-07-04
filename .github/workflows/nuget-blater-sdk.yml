@@ -1,0 +1,40 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Core
+      uses: actions/checkout@v4
+      with:
+        name: BlaterTech/Blater
+        path: blater/Blater
+    - name: Checkout SDK
+      uses: actions/checkout@v4
+      with:
+        path: blater/Blater.SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+    - name: Restore dependencies
+      run: dotnet restore src/Blater.sln
+    - name: Build
+      run: dotnet build --no-restore blater/src/Blater/Blater.SDK.csproj
+    - name: Test
+      run: dotnet test --no-build --verbosity normal blater/src/Blater/Blater.SDK.csproj
+    - name: Pack
+      run: |
+        export NUGET_VERSION=$(date --utc '+%Y.%m.%d.%H%M' | sed 's/\.\(0*\)/./g')
+        dotnet pack --output nupkgs -p:PackageVersion=$NUGET_VERSION blater/src/Blater.SDK/Blater.SDK.csproj
+    - name: Push
+      run: dotnet nuget push nupkgs/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
