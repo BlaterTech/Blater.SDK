@@ -161,6 +161,11 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         return Upsert(obj.Id, obj);
     }
 
+    public Task<BlaterResult<T>> Update(T obj)
+    {
+        return Update(obj.Id, obj);
+    }
+
     public async Task<BlaterResult<T>> Update(BlaterId id, T obj)
     {
         ValidatePartition(id);
