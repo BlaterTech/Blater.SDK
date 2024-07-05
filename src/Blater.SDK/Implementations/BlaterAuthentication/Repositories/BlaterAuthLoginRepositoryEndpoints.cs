@@ -1,4 +1,5 @@
 ﻿using Blater.Exceptions;
+using Blater.Exceptions.Database;
 using Blater.Models.User;
 using Blater.SDK.Contracts.Authentication.Request;
 using Blater.SDK.Contracts.Common.Request;
@@ -16,7 +17,7 @@ public class BlaterAuthLoginRepositoryEndpoints(IBlaterAuthLoginStoreEndpoints s
             throw new BlaterException(errors);
         }
 
-        return response;
+        return response ?? string.Empty;
     }
 
     public async Task<BlaterUser> Register(RegisterBlaterUserRequest request)
@@ -25,6 +26,11 @@ public class BlaterAuthLoginRepositoryEndpoints(IBlaterAuthLoginStoreEndpoints s
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
+        }
+
+        if (response == null)
+        {
+            throw new BlaterDatabaseException("User not found");
         }
 
         return response;

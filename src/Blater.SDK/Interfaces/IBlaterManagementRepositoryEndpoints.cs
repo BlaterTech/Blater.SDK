@@ -1,6 +1,4 @@
-﻿using Blater.Results;
-
-namespace Blater.SDK.Interfaces;
+﻿namespace Blater.SDK.Interfaces;
 
 public interface IBlaterManagementRepositoryEndpoints
 {

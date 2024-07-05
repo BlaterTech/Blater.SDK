@@ -45,7 +45,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         {
             return BlaterErrors.NotFound;
         }
-
+        
         return value;
     }
 
@@ -63,7 +63,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         {
             return BlaterErrors.NotFound;
         }
-
+        
         return model;
     }
 
@@ -82,7 +82,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         {
             return BlaterErrors.NotFound;
         }
-
+        
         return model;
     }
 
@@ -104,7 +104,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         {
             return BlaterErrors.NotFound;
         }
-
+        
         return models.AsReadOnly()!;
     }
 
@@ -123,7 +123,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         {
             return BlaterErrors.NotFound;
         }
-
+        
         return models.AsReadOnly()!;
     }
 
@@ -131,7 +131,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
 
     #region Upsert/Update/Insert
 
-    public async Task<BlaterResult<T>> Upsert(T obj)
+    public async Task<BlaterResult<T>> Upsert(BlaterId id, T obj)
     {
         if (obj.Id == BlaterId.Empty)
         {
@@ -150,19 +150,22 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
 
         return obj;
     }
-
-    public async Task<BlaterResult<T>> Update(T obj)
+    
+    public Task<BlaterResult<T>> Upsert(T obj)
     {
-        ValidatePartition(obj.Id);
-
-        var json = obj.ToJson();
-
-        if (json == null)
+        if (obj.Id == BlaterId.Empty)
         {
-            return BlaterErrors.JsonSerializationError("Error in serialize json");
+            obj.Id = BlaterId.New(Partition);
         }
 
-        var result = await endPoints.Update(obj.Id, json);
+        return Upsert(obj.Id, obj);
+    }
+
+    public async Task<BlaterResult<T>> Update(BlaterId id, T obj)
+    {
+        ValidatePartition(id);
+
+        var result = await endPoints.Update(id, obj.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -173,7 +176,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         return obj;
     }
 
-    public async Task<BlaterResult<T>> Insert(T obj)
+    public async Task<BlaterResult<T>> Insert(BlaterId id, T obj)
     {
         if (obj.Id != BlaterId.Empty)
         {
@@ -200,6 +203,12 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         return obj;
     }
 
+    public Task<BlaterResult<T>> Insert(T obj)
+    {
+        obj.Id = BlaterId.New(Partition);
+        return Insert(obj.Id, obj);
+    }
+
     #endregion
 
     #region Changes
@@ -221,7 +230,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
             {
                 yield return BlaterErrors.JsonSerializationError(response);
             }
-
+            
             yield return model!;
         }
     }
@@ -239,7 +248,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         {
             return errors;
         }
-
+        
         return response;
     }
 
@@ -252,7 +261,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         {
             return errors;
         }
-
+        
         return response;
     }
 
@@ -263,7 +272,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         {
             return errors;
         }
-
+        
         return response;
     }
 
@@ -278,7 +287,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         {
             return errors;
         }
-
+        
         return response;
     }
 

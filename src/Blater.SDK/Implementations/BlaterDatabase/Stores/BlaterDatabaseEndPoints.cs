@@ -35,7 +35,7 @@ public class BlaterDatabaseEndPoints(BlaterHttpClient client) : IBlaterDatabaseE
                 throw new BlaterException(errors);
             }
 
-            yield return response;
+            yield return response ?? string.Empty;
         }
     }
 
@@ -46,6 +46,11 @@ public class BlaterDatabaseEndPoints(BlaterHttpClient client) : IBlaterDatabaseE
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
+        }
+
+        if (string.IsNullOrWhiteSpace(response))
+        {
+            return BlaterErrors.DatabaseError;
         }
 
         var blaterId = response.ToBlaterId();
@@ -60,6 +65,11 @@ public class BlaterDatabaseEndPoints(BlaterHttpClient client) : IBlaterDatabaseE
         {
             return errors;
         }
+        
+        if (string.IsNullOrWhiteSpace(response))
+        {
+            return BlaterErrors.DatabaseError;
+        }
 
         var blaterId = response.ToBlaterId();
         return blaterId;
@@ -71,6 +81,11 @@ public class BlaterDatabaseEndPoints(BlaterHttpClient client) : IBlaterDatabaseE
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
+        }
+        
+        if (string.IsNullOrWhiteSpace(response))
+        {
+            return BlaterErrors.DatabaseError;
         }
 
         var blaterId = response.ToBlaterId();

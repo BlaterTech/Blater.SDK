@@ -14,7 +14,7 @@ public class BlaterManagementRepositoryEndpoints(IBlaterManagementStoreEndpoints
             throw new BlaterException(errors);
         }
 
-        return response;
+        return response ?? string.Empty;
     }
 
     public async Task<bool> DeleteDatabase(string databaseName)
