@@ -1,4 +1,5 @@
-﻿using Blater.Exceptions;
+﻿using System.Runtime.CompilerServices;
+using Blater.Exceptions;
 using Blater.Query.Models;
 using Blater.Results;
 using Blater.SDK.Interfaces;
@@ -24,7 +25,7 @@ public class BlaterDatabaseEndPoints(BlaterHttpClient client) : IBlaterDatabaseE
         return client.Post<IReadOnlyList<string>>($"{Endpoint}/{partition}/query", query);
     }
 
-    public async IAsyncEnumerable<BlaterResult<string>> WatchChangesQuery(string partition, BlaterQuery query)
+    public async IAsyncEnumerable<BlaterResult<string>> WatchChangesQuery(string partition, BlaterQuery query, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var result = client.PostStream<string>($"{Endpoint}/{partition}/changes/query", query);
 

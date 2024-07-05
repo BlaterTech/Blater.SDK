@@ -220,7 +220,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
 
     public async IAsyncEnumerable<BlaterResult<T>> GetChangesQuery(BlaterQuery query)
     {
-        var result = endPoints.WatchChangesQuery(Partition, query);
+        var result = endPoints.WatchChangesQuery(Partition, query, CancellationToken.None);
 
         await foreach (var item in result)
         {

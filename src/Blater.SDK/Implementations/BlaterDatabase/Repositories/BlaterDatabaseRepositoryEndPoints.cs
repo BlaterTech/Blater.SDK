@@ -155,7 +155,7 @@ public class BlaterDatabaseRepositoryEndPoints<T>(IBlaterDatabaseEndpoints endPo
     public async IAsyncEnumerable<string> GetChangesQuery(Expression<Func<T, bool>> predicate)
     {
         var blaterQuery = predicate.ExpressionToBlaterQuery();
-        var result = endPoints.WatchChangesQuery(_partition, blaterQuery);
+        var result = endPoints.WatchChangesQuery(_partition, blaterQuery, CancellationToken.None);
 
 
         await foreach (var item in result)
