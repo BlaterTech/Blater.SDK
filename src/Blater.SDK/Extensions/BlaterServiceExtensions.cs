@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using Blater.Models.User;
+using Blater.SDK.Implementations;
 using Blater.SDK.Interfaces.BlaterAuth;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
@@ -46,10 +47,10 @@ public static class BlaterServiceExtensions
             {
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                
             });
         }
-        
+
+        services.AddScoped<IBlaterSDK, BlaterSDK>();
         services.AddBlaterDatabase();
         services.AddBlaterManagement();
         services.AddBlaterKeyValue();
