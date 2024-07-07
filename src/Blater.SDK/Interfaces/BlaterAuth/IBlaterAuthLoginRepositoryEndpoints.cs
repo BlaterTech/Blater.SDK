@@ -2,8 +2,9 @@
 using Blater.SDK.Contracts.Authentication.Request;
 using Blater.SDK.Contracts.Common.Request;
 
-namespace Blater.SDK.Interfaces;
+namespace Blater.SDK.Interfaces.BlaterAuth;
 
+//TODO this interface is not needed
 public interface IBlaterAuthLoginRepositoryEndpoints
 {
     Task<string> LoginLocal(AuthRequest request);

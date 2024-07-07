@@ -1,3 +1,6 @@
+using System.Net.Http.Headers;
+using Blater.Models.User;
+using Blater.SDK.Interfaces.BlaterAuth;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Blater.SDK.Extensions;
@@ -20,24 +23,30 @@ public static class BlaterServiceExtensions
         //If null use the default configuration
         if (blaterSection == null)
         {
-            BlaterHttpClient.Schema = "Bearer";
-            services.AddHttpClient<BlaterHttpClient>(client =>
+            services.AddSingleton<BlaterAuthState>();
+            services.AddHttpClient<BlaterHttpClient>((sp, client) =>
             {
                 client.BaseAddress = new Uri("https://api.blater.tech");
+                //Add the token from BlaterAuthState
+                var authState = sp.GetRequiredService<BlaterAuthState>();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authState.JwtToken);
             });
         }
         else
         {
-            var schema = blaterSection.GetValue<string>("Schema", "Bearer");
-            BlaterHttpClient.Schema = schema;
-            
             var token = blaterSection.GetValue<string>("Token");
-            BlaterHttpClient.Token = token;
             
+            services.AddSingleton(new BlaterAuthState
+            {
+                JwtToken = token ?? string.Empty
+            });
+
             var baseUrl = blaterSection.GetValue<string>("BaseUrl", "https://api.blater.tech");
             services.AddHttpClient<BlaterHttpClient>(client =>
             {
                 client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                
             });
         }
         

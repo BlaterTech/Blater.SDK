@@ -2,6 +2,7 @@
 using Blater.Results;
 using Blater.SDK.Contracts.Authentication.Request;
 using Blater.SDK.Contracts.Common.Request;
+using Blater.SDK.Interfaces.BlaterAuth;
 
 namespace Blater.SDK.Implementations.REST.BlaterAuthentication.Stores;
 
@@ -21,8 +22,6 @@ public class BlaterAuthLoginStoreEndpoints(BlaterHttpClient client) : IBlaterAut
         {
             return BlaterErrors.NotFound;
         }
-
-        BlaterHttpClient.Token = response;
 
         return response;
     }

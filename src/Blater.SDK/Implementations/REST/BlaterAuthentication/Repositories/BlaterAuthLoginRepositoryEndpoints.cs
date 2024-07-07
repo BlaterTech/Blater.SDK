@@ -3,6 +3,7 @@ using Blater.Exceptions.Database;
 using Blater.Models.User;
 using Blater.SDK.Contracts.Authentication.Request;
 using Blater.SDK.Contracts.Common.Request;
+using Blater.SDK.Interfaces.BlaterAuth;
 
 namespace Blater.SDK.Implementations.REST.BlaterAuthentication.Repositories;
 

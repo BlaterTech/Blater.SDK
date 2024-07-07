@@ -2,8 +2,9 @@
 using Blater.Results;
 using Blater.SDK.Contracts.Common.Request;
 
-namespace Blater.SDK.Interfaces;
+namespace Blater.SDK.Interfaces.BlaterAuth;
 
+//TODO this interface is not needed
 public interface IBlaterAuthEmailStoreEndpoints
 {
     Task<BlaterResult<BlaterUser>> FindByEmail(string email);
