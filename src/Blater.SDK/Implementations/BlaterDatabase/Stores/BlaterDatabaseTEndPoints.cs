@@ -130,15 +130,13 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
     #endregion
 
     #region Upsert/Update/Insert
-
-    public async Task<BlaterResult<T>> Upsert(BlaterId id, T obj)
+    
+    public async Task<BlaterResult<T>> Upsert(T obj)
     {
-        if (obj.Id == BlaterId.Empty)
+        if (obj.Id == BlaterId.Empty || obj.Id == null!)
         {
             obj.Id = BlaterId.New(Partition);
         }
-
-        ValidatePartition(obj.Id);
 
         var result = await endPoints.Upsert(obj.Id, obj.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
@@ -149,16 +147,6 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
         obj.Id = response;
 
         return obj;
-    }
-    
-    public Task<BlaterResult<T>> Upsert(T obj)
-    {
-        if (obj.Id == BlaterId.Empty)
-        {
-            obj.Id = BlaterId.New(Partition);
-        }
-
-        return Upsert(obj.Id, obj);
     }
 
     public Task<BlaterResult<T>> Update(T obj)

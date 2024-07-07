@@ -21,7 +21,7 @@ public static class BlaterServiceExtensions
         services.AddHttpClient<BlaterHttpClient>(client =>
         {
             BlaterHttpClient.Schema = "Bearer";
-            client.BaseAddress = new Uri("https://br-gru.api.blater.tech/");
+            client.BaseAddress = new Uri("https://api.blater.tech");
         });
 
         services.AddBlaterDatabase();
