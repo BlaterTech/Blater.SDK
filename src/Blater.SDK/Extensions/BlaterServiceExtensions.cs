@@ -1,18 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using Blater.Interfaces;
-using Blater.Interfaces.BlaterAuthentication.Repositories;
-using Blater.Interfaces.BlaterAuthentication.Stores;
-using Blater.SDK.Implementations.BlaterAuthentication.Repositories;
-using Blater.SDK.Implementations.BlaterAuthentication.Stores;
-using Blater.SDK.Implementations.BlaterDatabase.Repositories;
-using Blater.SDK.Implementations.BlaterDatabase.Stores;
-using Blater.SDK.Implementations.BlaterKeyValue.Repositories;
-using Blater.SDK.Implementations.BlaterKeyValue.Stores;
-using Blater.SDK.Implementations.BlaterManagement.Repositories;
-using Blater.SDK.Implementations.BlaterManagement.Stores;
-using Blater.SDK.Interfaces;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Blater.SDK.Extensions;
