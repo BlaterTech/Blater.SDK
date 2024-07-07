@@ -1,12 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using Blater.Exceptions;
+using Blater.Interfaces;
 using Blater.Query.Models;
 using Blater.Results;
 using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterDatabase.Stores;
 
-public class BlaterDatabaseEndPoints(BlaterHttpClient client) : IBlaterDatabaseEndpoints
+public class BlaterDatabaseRest(BlaterHttpClient client) : IBlaterDatabaseStore
 {
     private static string Endpoint => "/v1/Database";
 
@@ -25,9 +26,9 @@ public class BlaterDatabaseEndPoints(BlaterHttpClient client) : IBlaterDatabaseE
         return client.Post<IReadOnlyList<string>>($"{Endpoint}/{partition}/query", query);
     }
 
-    public async IAsyncEnumerable<BlaterResult<string>> WatchChangesQuery(string partition, BlaterQuery query, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<BlaterResult<string>> WatchChangesQuery(string partition, BlaterQuery query, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var result = client.PostStream<string>($"{Endpoint}/{partition}/changes/query", query);
+        var result = client.PostStream<string>($"{Endpoint}/{partition}/changes/query", query, cancellationToken);
 
         await foreach (var item in result)
         {

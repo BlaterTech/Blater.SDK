@@ -1,11 +1,12 @@
 ﻿using Blater.Exceptions;
+using Blater.Interfaces;
 using Blater.JsonUtilities;
 using Blater.Results;
 using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterKeyValue.Stores;
 
-public class BlaterKeyValueStoreEndPoints(BlaterHttpClient client) : IBlaterKeyValueStoreEndpoints
+public class BlaterKeyValueStoreRest(BlaterHttpClient client) : IBlaterKeyValueStore
 {
     private static string Endpoint => "v1/KeyValue";
 

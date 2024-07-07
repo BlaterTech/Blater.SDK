@@ -10,8 +10,8 @@ using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterDatabase.Stores;
 
-public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
-    : IBlaterDatabaseStoreTEndpoints<T>
+public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
+    : IBlaterDatabaseStoreT<T>
     where T : BaseDataModel
 {
     public string Partition => typeof(T).FullName?.SanitizeString() ?? string.Empty;
@@ -30,7 +30,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
     {
         ValidatePartition(id);
 
-        var result = await endPoints.Get(id);
+        var result = await store.Get(id);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -51,7 +51,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
 
     public async Task<BlaterResult<T>> FindOne(BlaterQuery query)
     {
-        var result = await endPoints.QueryOne(Partition, query);
+        var result = await store.QueryOne(Partition, query);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -70,7 +70,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
     public async Task<BlaterResult<T>> FindOne(Expression<Func<T, bool>> predicate)
     {
         var blaterQuery = predicate.ExpressionToBlaterQuery();
-        var result = await endPoints.QueryOne(Partition, blaterQuery);
+        var result = await store.QueryOne(Partition, blaterQuery);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -92,7 +92,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
 
     public async Task<BlaterResult<IReadOnlyList<T>>> FindMany(BlaterQuery query)
     {
-        var result = await endPoints.Query(Partition, query);
+        var result = await store.Query(Partition, query);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -111,7 +111,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
     public async Task<BlaterResult<IReadOnlyList<T>>> FindMany(Expression<Func<T, bool>> predicate)
     {
         var blaterQuery = predicate.ExpressionToBlaterQuery();
-        var result = await endPoints.Query(Partition, blaterQuery);
+        var result = await store.Query(Partition, blaterQuery);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -138,7 +138,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
             obj.Id = BlaterId.New(Partition);
         }
 
-        var result = await endPoints.Upsert(obj.Id, obj.ToJson()!);
+        var result = await store.Upsert(obj.Id, obj.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -158,7 +158,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
     {
         ValidatePartition(id);
 
-        var result = await endPoints.Update(id, obj.ToJson()!);
+        var result = await store.Update(id, obj.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -185,7 +185,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
             return BlaterErrors.JsonSerializationError("Error in serialize json");
         }
 
-        var result = await endPoints.Insert(obj.Id, json);
+        var result = await store.Insert(obj.Id, json);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -208,7 +208,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
 
     public async IAsyncEnumerable<BlaterResult<T>> GetChangesQuery(BlaterQuery query)
     {
-        var result = endPoints.WatchChangesQuery(Partition, query, CancellationToken.None);
+        var result = store.WatchChangesQuery(Partition, query, CancellationToken.None);
 
         await foreach (var item in result)
         {
@@ -236,7 +236,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
     {
         ValidatePartition(id);
 
-        var result = await endPoints.Delete(id);
+        var result = await store.Delete(id);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -249,7 +249,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
     {
         ids.ForEach(ValidatePartition);
 
-        var result = await endPoints.Delete(ids);
+        var result = await store.Delete(ids);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -260,7 +260,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
 
     public async Task<BlaterResult<int>> Delete(BlaterQuery query)
     {
-        var result = await endPoints.Delete(query);
+        var result = await store.Delete(query);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
@@ -275,7 +275,7 @@ public class BlaterDatabaseTEndPoints<T>(IBlaterDatabaseEndpoints endPoints)
 
     public async Task<BlaterResult<int>> Count()
     {
-        var result = await endPoints.Count(Partition);
+        var result = await store.Count(Partition);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;

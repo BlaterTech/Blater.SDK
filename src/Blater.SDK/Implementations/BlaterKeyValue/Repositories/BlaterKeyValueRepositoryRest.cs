@@ -4,7 +4,7 @@ using Blater.SDK.Interfaces;
 
 namespace Blater.SDK.Implementations.BlaterKeyValue.Repositories;
 
-public class BlaterKeyValueRepositoryEndPoints(IBlaterKeyValueStoreEndpoints storeEndPoints) 
+public class BlaterKeyValueRepositoryRest(IBlaterKeyValueStore keyValueStore) 
     : IBlaterKeyValueRepository
 {
     private static void ValidateKey(string key)
@@ -21,7 +21,7 @@ public class BlaterKeyValueRepositoryEndPoints(IBlaterKeyValueStoreEndpoints sto
     {
         ValidateKey(key);
         
-        var result = await storeEndPoints.Get<TValue>(key);
+        var result = await keyValueStore.Get<TValue>(key);
 
         if (result.HandleErrors(out var errors, out var response))
         {
@@ -35,7 +35,7 @@ public class BlaterKeyValueRepositoryEndPoints(IBlaterKeyValueStoreEndpoints sto
     {
         ValidateKey(key);
         
-        var result = await storeEndPoints.Get(key);
+        var result = await keyValueStore.Get(key);
 
         if (result.HandleErrors(out var errors, out var response))
         {
@@ -47,7 +47,7 @@ public class BlaterKeyValueRepositoryEndPoints(IBlaterKeyValueStoreEndpoints sto
     
     public async Task<IReadOnlyList<string>> Get()
     {
-        var result = await storeEndPoints.Get();
+        var result = await keyValueStore.Get();
         
         if (result.HandleErrors(out var errors, out var response))
         {
@@ -61,7 +61,7 @@ public class BlaterKeyValueRepositoryEndPoints(IBlaterKeyValueStoreEndpoints sto
     {
         ValidateKey(key);
         
-        var result = await storeEndPoints.Set(key, value);
+        var result = await keyValueStore.Set(key, value);
         
         if (result.HandleErrors(out var errors, out var response))
         {
@@ -75,7 +75,7 @@ public class BlaterKeyValueRepositoryEndPoints(IBlaterKeyValueStoreEndpoints sto
     {
         ValidateKey(key);
         
-        var result = await storeEndPoints.Set(key, value);
+        var result = await keyValueStore.Set(key, value);
         
         if (result.HandleErrors(out var errors, out var response))
         {
@@ -89,7 +89,7 @@ public class BlaterKeyValueRepositoryEndPoints(IBlaterKeyValueStoreEndpoints sto
     {
         ValidateKey(key);
         
-        var result = await storeEndPoints.Remove(key);
+        var result = await keyValueStore.Remove(key);
         
         if (result.HandleErrors(out var errors, out var response))
         {

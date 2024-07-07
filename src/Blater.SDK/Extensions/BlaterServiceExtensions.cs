@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Blater.Interfaces;
 using Blater.Interfaces.BlaterAuthentication.Repositories;
 using Blater.Interfaces.BlaterAuthentication.Stores;
@@ -10,20 +11,51 @@ using Blater.SDK.Implementations.BlaterKeyValue.Stores;
 using Blater.SDK.Implementations.BlaterManagement.Repositories;
 using Blater.SDK.Implementations.BlaterManagement.Stores;
 using Blater.SDK.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Blater.SDK.Extensions;
 
 public static class BlaterServiceExtensions
 {
+    [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract")]
+    //TODO: Properly handle Environment variables
     public static void AddBlaterServices(this IServiceCollection services)
     {
-        services.AddHttpClient<BlaterHttpClient>(client =>
+        var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+        
+        if (configuration == null)
+        {
+            throw new Exception("Configuration is null");
+        }
+
+        var blaterSection = configuration.GetSection("Blater");
+        
+        //If null use the default configuration
+        if (blaterSection == null)
         {
             BlaterHttpClient.Schema = "Bearer";
-            client.BaseAddress = new Uri("https://api.blater.tech");
-        });
-
+            services.AddHttpClient<BlaterHttpClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://api.blater.tech");
+            });
+        }
+        else
+        {
+            var schema = blaterSection.GetValue<string>("Schema", "Bearer");
+            BlaterHttpClient.Schema = schema;
+            
+            var token = blaterSection.GetValue<string>("Token");
+            BlaterHttpClient.Token = token;
+            
+            var baseUrl = blaterSection.GetValue<string>("BaseUrl", "https://api.blater.tech");
+            services.AddHttpClient<BlaterHttpClient>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
+        }
+        
         services.AddBlaterDatabase();
         services.AddBlaterManagement();
         services.AddBlaterKeyValue();
@@ -33,10 +65,11 @@ public static class BlaterServiceExtensions
 
     private static void AddBlaterDatabase(this IServiceCollection services)
     {
-        services.AddScoped<IBlaterDatabaseEndpoints, BlaterDatabaseEndPoints>();
-        services.AddScoped(typeof(IBlaterDatabaseStoreTEndpoints<>), typeof(BlaterDatabaseTEndPoints<>));
-
-        services.AddScoped(typeof(IBlaterDatabaseRepository<>), typeof(BlaterDatabaseRepositoryEndPoints<>));
+        //Store
+        services.AddScoped<IBlaterDatabaseStore, BlaterDatabaseRest>();
+        services.AddScoped(typeof(IBlaterDatabaseStoreT<>), typeof(BlaterDatabaseTRest<>));
+        //Repository
+        services.AddScoped(typeof(IBlaterDatabaseRepository<>), typeof(BlaterDatabaseRepositoryRest<>));
     }
 
     private static void AddBlaterManagement(this IServiceCollection services)
@@ -48,9 +81,9 @@ public static class BlaterServiceExtensions
 
     private static void AddBlaterKeyValue(this IServiceCollection services)
     {
-        services.AddScoped<IBlaterKeyValueStoreEndpoints, BlaterKeyValueStoreEndPoints>();
+        services.AddScoped<IBlaterKeyValueStore, BlaterKeyValueStoreRest>();
 
-        services.AddScoped<IBlaterKeyValueRepository, BlaterKeyValueRepositoryEndPoints>();
+        services.AddScoped<IBlaterKeyValueRepository, BlaterKeyValueRepositoryRest>();
     }
 
     private static void AddBlaterAuthStores(this IServiceCollection services)
