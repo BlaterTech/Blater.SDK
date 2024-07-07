@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Blater.Exceptions;
 using Blater.Interfaces;
 using Blater.JsonUtilities;
@@ -152,10 +153,10 @@ public class BlaterDatabaseRepositoryEndPoints<T>(IBlaterDatabaseEndpoints endPo
         return response;
     }
     
-    public async IAsyncEnumerable<string> GetChangesQuery(Expression<Func<T, bool>> predicate)
+    public async IAsyncEnumerable<string> GetChangesQuery(Expression<Func<T, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var blaterQuery = predicate.ExpressionToBlaterQuery();
-        var result = endPoints.WatchChangesQuery(_partition, blaterQuery, CancellationToken.None);
+        var result = endPoints.WatchChangesQuery(_partition, blaterQuery, cancellationToken);
 
 
         await foreach (var item in result)
