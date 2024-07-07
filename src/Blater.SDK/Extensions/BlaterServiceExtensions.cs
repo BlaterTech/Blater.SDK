@@ -8,7 +8,6 @@ namespace Blater.SDK.Extensions;
 
 public static class BlaterServiceExtensions
 {
-    [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract")]
     //TODO: Properly handle Environment variables
     public static void AddBlaterServices(this IServiceCollection services)
     {
@@ -22,7 +21,7 @@ public static class BlaterServiceExtensions
         var blaterSection = configuration.GetSection("Blater");
         
         //If null use the default configuration
-        if (blaterSection == null)
+        if (blaterSection.Value == null)
         {
             services.AddSingleton<BlaterAuthState>();
             services.AddHttpClient<BlaterHttpClient>((sp, client) =>
