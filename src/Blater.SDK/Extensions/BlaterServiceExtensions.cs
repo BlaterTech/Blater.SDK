@@ -24,9 +24,17 @@ public static class BlaterServiceExtensions
         if (blaterSection.Value == null)
         {
             services.AddSingleton<BlaterAuthState>();
+            
+            var baseUrl = "https://api.blater.tech";
+            
+            if(Environment.GetEnvironmentVariable("BLATER_API_URL") != null)
+            {
+                baseUrl = Environment.GetEnvironmentVariable("BLATER_API_URL");
+            }
+            
             services.AddHttpClient<BlaterHttpClient>((sp, client) =>
             {
-                client.BaseAddress = new Uri("https://api.blater.tech");
+                client.BaseAddress = new Uri(baseUrl!);
                 //Add the token from BlaterAuthState
                 var authState = sp.GetRequiredService<BlaterAuthState>();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authState.JwtToken);
@@ -42,9 +50,15 @@ public static class BlaterServiceExtensions
             });
 
             var baseUrl = blaterSection.GetValue<string>("BaseUrl", "https://api.blater.tech");
+            
+            if(Environment.GetEnvironmentVariable("BLATER_API_URL") != null)
+            {
+                baseUrl = Environment.GetEnvironmentVariable("BLATER_API_URL");
+            }
+            
             services.AddHttpClient<BlaterHttpClient>(client =>
             {
-                client.BaseAddress = new Uri(baseUrl);
+                client.BaseAddress = new Uri(baseUrl!);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             });
         }
