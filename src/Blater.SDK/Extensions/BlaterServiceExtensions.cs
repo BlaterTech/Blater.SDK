@@ -38,6 +38,9 @@ public static class BlaterServiceExtensions
                 //Add the token from BlaterAuthState
                 var authState = sp.GetRequiredService<BlaterAuthState>();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authState.JwtToken);
+                
+                //Ignore SSL TODO remove once certificate is added
+                client.DefaultRequestHeaders.Add("X-Ignore-SSL", "true");
             });
         }
         else
@@ -60,6 +63,9 @@ public static class BlaterServiceExtensions
             {
                 client.BaseAddress = new Uri(baseUrl!);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                
+                //Ignore SSL TODO remove once certificate is added
+                client.DefaultRequestHeaders.Add("X-Ignore-SSL", "true");
             });
         }
 
