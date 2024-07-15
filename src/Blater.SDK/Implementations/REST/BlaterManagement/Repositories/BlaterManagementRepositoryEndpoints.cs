@@ -1,4 +1,5 @@
 ﻿using Blater.Exceptions;
+using Blater.SDK.Interfaces;
 using Blater.SDK.Interfaces.BlaterAuth;
 
 namespace Blater.SDK.Implementations.REST.BlaterManagement.Repositories;

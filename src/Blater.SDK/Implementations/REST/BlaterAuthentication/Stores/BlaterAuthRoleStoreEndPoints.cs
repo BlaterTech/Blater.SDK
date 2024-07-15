@@ -1,4 +1,5 @@
-﻿using Blater.Models.User;
+﻿using Blater.Interfaces.BlaterAuthentication.Stores;
+using Blater.Models.User;
 using Blater.Query.Models;
 using Blater.Results;
 

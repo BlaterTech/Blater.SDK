@@ -1,6 +1,7 @@
 using Blater.Exceptions;
 using Blater.Models.User;
 using Blater.SDK.Contracts.Authentication.Request;
+using Blater.SDK.Interfaces;
 using Blater.SDK.Interfaces.BlaterAuth;
 
 namespace Blater.SDK.Implementations;

@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Blater.Exceptions;
+using Blater.Interfaces;
 using Blater.Query.Models;
 using Blater.Results;
 

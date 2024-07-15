@@ -1,4 +1,5 @@
-﻿using Blater.Results;
+﻿using Blater.Interfaces.BlaterAuthentication.Stores;
+using Blater.Results;
 using Blater.SDK.Contracts.Common.Request;
 
 namespace Blater.SDK.Implementations.REST.BlaterAuthentication.Stores;
