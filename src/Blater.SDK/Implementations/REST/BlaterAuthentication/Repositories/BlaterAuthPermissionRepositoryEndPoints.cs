@@ -1,7 +1,5 @@
 ﻿using System.Linq.Expressions;
 using Blater.Exceptions;
-using Blater.Interfaces.BlaterAuthentication.Repositories;
-using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.Query.Extensions;
 

@@ -2,7 +2,7 @@ namespace Blater.SDK.Contracts.Authentication.Request;
 
 public class AuthRequest
 {
-    public required string Email { get; set; }
+    public string Email { get; set; } = null!;
 
-    public required string Password { get; set; }
+    public string Password { get; set; } = null!;
 }

@@ -1,5 +1,4 @@
-﻿using Blater.Interfaces.BlaterAuthentication.Stores;
-using Blater.Models.User;
+﻿using Blater.Models.User;
 using Blater.Results;
 
 namespace Blater.SDK.Implementations.REST.BlaterAuthentication.Stores;

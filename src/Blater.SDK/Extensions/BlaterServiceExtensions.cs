@@ -1,21 +1,7 @@
 using System.Net.Http.Headers;
-using Blater.Interfaces;
-using Blater.Interfaces.BlaterAuthentication.Repositories;
-using Blater.Interfaces.BlaterAuthentication.Stores;
 using Blater.Models.User;
 using Blater.SDK.Implementations;
-using Blater.SDK.Implementations.REST.BlaterAuthentication.Repositories;
-using Blater.SDK.Implementations.REST.BlaterAuthentication.Stores;
-using Blater.SDK.Implementations.REST.BlaterDatabase.Repositories;
-using Blater.SDK.Implementations.REST.BlaterDatabase.Stores;
-using Blater.SDK.Implementations.REST.BlaterKeyValue.Repositories;
-using Blater.SDK.Implementations.REST.BlaterKeyValue.Stores;
-using Blater.SDK.Implementations.REST.BlaterManagement.Repositories;
-using Blater.SDK.Implementations.REST.BlaterManagement.Stores;
-using Blater.SDK.Interfaces;
 using Blater.SDK.Interfaces.BlaterAuth;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Blater.SDK.Extensions;

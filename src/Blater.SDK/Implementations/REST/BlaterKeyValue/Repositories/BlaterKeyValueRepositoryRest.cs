@@ -1,5 +1,4 @@
 ﻿using Blater.Exceptions;
-using Blater.Interfaces;
 
 namespace Blater.SDK.Implementations.REST.BlaterKeyValue.Repositories;
 
