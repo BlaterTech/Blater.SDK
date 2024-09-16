@@ -80,10 +80,10 @@ public static class BlaterServiceExtensions
     public static void AddBlaterDatabase(this IServiceCollection services)
     {
         //Store
-        services.AddScoped<IBlaterDatabaseStore, BlaterDatabaseRest>();
-        services.AddScoped(typeof(IBlaterDatabaseStoreT<>), typeof(BlaterDatabaseTRest<>));
+        //services.AddScoped<IBlaterDatabaseStore, BlaterDatabaseRest>();
+        //services.AddScoped(typeof(IBlaterDatabaseStoreT<>), typeof(BlaterDatabaseTRest<>));
         //Repository
-        services.AddScoped(typeof(IBlaterDatabaseRepository<>), typeof(BlaterDatabaseRepositoryRest<>));
+        //services.AddScoped(typeof(IBlaterDatabaseRepository<>), typeof(BlaterDatabaseRepositoryRest<>));
     }
 
     public static void AddBlaterManagement(this IServiceCollection services)

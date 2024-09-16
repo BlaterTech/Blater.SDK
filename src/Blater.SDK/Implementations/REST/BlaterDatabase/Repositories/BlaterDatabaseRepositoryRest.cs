@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+﻿/*using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Blater.Exceptions;
 using Blater.Models.Bases;
@@ -11,7 +11,7 @@ public class BlaterDatabaseRepositoryRest<T>(IBlaterDatabaseStore store)
 {
     private readonly string _partition = typeof(T).FullName?.SanitizeString() ?? throw new BlaterException("Could not get the type name of the entity");
     
-    public async Task<T?> FindOne(BlaterId id)
+    public async Task<T?> FindOne(Ulid id)
     {
         var result = await store.Get(id);
         if (result.HandleErrors(out var errors, out var response))
@@ -52,7 +52,7 @@ public class BlaterDatabaseRepositoryRest<T>(IBlaterDatabaseStore store)
         return models;
     }
     
-    public async Task<BlaterId> Upsert(T entity)
+    public async Task<Ulid> Upsert(T entity)
     {
         var result = await store.Upsert(entity.Id, entity.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
@@ -68,7 +68,7 @@ public class BlaterDatabaseRepositoryRest<T>(IBlaterDatabaseStore store)
         return response;
     }
     
-    public async Task<BlaterId> Insert(T entity)
+    public async Task<Ulid> Insert(T entity)
     {
         var result = await store.Insert(entity.Id, entity.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
@@ -79,7 +79,7 @@ public class BlaterDatabaseRepositoryRest<T>(IBlaterDatabaseStore store)
         return response;
     }
     
-    public async Task<BlaterId> Update(T entity)
+    public async Task<Ulid> Update(T entity)
     {
         var result = await store.Update(entity.Id, entity.ToJson()!);
         if (result.HandleErrors(out var errors, out var response))
@@ -101,7 +101,7 @@ public class BlaterDatabaseRepositoryRest<T>(IBlaterDatabaseStore store)
         return response;
     }
     
-    public async Task<bool> Delete(BlaterId id)
+    public async Task<bool> Delete(Ulid id)
     {
         var result = await store.Delete(id);
         if (result.HandleErrors(out var errors, out var response))
@@ -165,4 +165,4 @@ public class BlaterDatabaseRepositoryRest<T>(IBlaterDatabaseStore store)
     }
     
     public IBlaterQueryable<T> Queryable { get; } = default!;
-}
+}*/

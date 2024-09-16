@@ -52,7 +52,7 @@ public class BlaterAuthPermissionRepositoryEndPoints(IBlaterAuthPermissionStore 
         return response;
     }
 
-    public async Task<bool> Delete(BlaterId id)
+    public async Task<bool> Delete(Ulid id)
     {
         var result = await storeEndPoints.Delete(id);
 
@@ -66,16 +66,18 @@ public class BlaterAuthPermissionRepositoryEndPoints(IBlaterAuthPermissionStore 
 
     public async Task<bool> Delete(Expression<Func<BlaterPermission, bool>> predicate)
     {
-        var query = predicate.ExpressionToBlaterQuery();
+        //var query = predicate.ExpressionToBlaterQuery();
 
-        var result = await storeEndPoints.Delete(query);
+        await Task.Delay(1);
+        return true;
+        /*var result = await storeEndPoints.Delete();
 
         if (result.HandleErrors(out var errors, out var response))
         {
             throw new BlaterException(errors);
         }
 
-        return response;
+        return response;*/
     }
 
     public async Task<IReadOnlyList<BlaterPermission>> GetAll()
@@ -95,7 +97,7 @@ public class BlaterAuthPermissionRepositoryEndPoints(IBlaterAuthPermissionStore 
         return response;
     }
 
-    public async Task<BlaterPermission> GetById(BlaterId id)
+    public async Task<BlaterPermission> GetById(Ulid id)
     {
         var result = await storeEndPoints.GetById(id);
 

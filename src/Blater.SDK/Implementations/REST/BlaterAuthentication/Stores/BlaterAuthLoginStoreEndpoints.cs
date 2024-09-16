@@ -41,7 +41,7 @@ public class BlaterAuthLoginStoreEndpoints(BlaterHttpClient client) : IBlaterAut
         return client.Delete<BlaterUser>($"{Endpoint}/remove-login/{user.Id}/{loginProvider}/{providerKey}");
     }
 
-    public Task<BlaterResult<IReadOnlyList<BlaterLoginInfo>>> GetLogins(BlaterId id)
+    public Task<BlaterResult<IReadOnlyList<BlaterLoginInfo>>> GetLogins(Ulid id)
     {
         return client.Get<IReadOnlyList<BlaterLoginInfo>>($"{Endpoint}/get-logins/{id}");
     }

@@ -40,7 +40,7 @@ public class BlaterAuthRoleRepositoryEndPoints(IBlaterAuthRoleStore storeEndPoin
         return response;
     }
 
-    public async Task<bool> Delete(BlaterId id)
+    public async Task<bool> Delete(Ulid id)
     {
         var result = await storeEndPoints.Delete(id);
 
@@ -54,7 +54,9 @@ public class BlaterAuthRoleRepositoryEndPoints(IBlaterAuthRoleStore storeEndPoin
 
     public async Task<bool> Delete(Expression<Func<BlaterRole, bool>> predicate)
     {
-        var query = predicate.ExpressionToBlaterQuery();
+        await Task.Delay(1);
+        return true;
+        /*var query = predicate.ExpressionToBlaterQuery();
 
         var result = await storeEndPoints.Delete(query);
 
@@ -63,7 +65,7 @@ public class BlaterAuthRoleRepositoryEndPoints(IBlaterAuthRoleStore storeEndPoin
             throw new BlaterException(errors);
         }
 
-        return response;
+        return response;*/
     }
 
     public async Task<bool> Delete(BlaterRole role)
@@ -78,7 +80,7 @@ public class BlaterAuthRoleRepositoryEndPoints(IBlaterAuthRoleStore storeEndPoin
         return response;
     }
 
-    public async Task<BlaterRole> GetById(BlaterId id)
+    public async Task<BlaterRole> GetById(Ulid id)
     {
         var result = await storeEndPoints.GetById(id);
 

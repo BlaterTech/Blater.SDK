@@ -70,7 +70,7 @@ public class BlaterAuthLoginRepositoryEndpoints(IBlaterAuthLoginStoreEndpoints s
         return response;
     }
 
-    public async Task<IReadOnlyList<BlaterLoginInfo>> GetLogins(BlaterId id)
+    public async Task<IReadOnlyList<BlaterLoginInfo>> GetLogins(Ulid id)
     {
         var result = await storeEndpointsEndPoints.GetLogins(id);
 
