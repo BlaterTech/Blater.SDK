@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using Blater.Exceptions;
-using Blater.Query.Models;
 using Blater.Results;
 
 namespace Blater.SDK.Implementations.REST.BlaterDatabase.Stores;

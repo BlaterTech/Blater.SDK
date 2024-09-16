@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Blater.Exceptions;
 using Blater.Models.User;
-using Blater.Query.Extensions;
 
 namespace Blater.SDK.Implementations.REST.BlaterAuthentication.Repositories;
 
