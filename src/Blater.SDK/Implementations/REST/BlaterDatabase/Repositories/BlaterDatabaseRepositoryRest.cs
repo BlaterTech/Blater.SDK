@@ -164,5 +164,5 @@ public class BlaterDatabaseRepositoryRest<T>(IBlaterDatabaseStore store)
         }
     }
     
-    public IBlaterQueryable<T> Queryable { get; } = default!;
+    public IBlaterQueryable<T> Queryable { get; set; } = default!;
 }*/
