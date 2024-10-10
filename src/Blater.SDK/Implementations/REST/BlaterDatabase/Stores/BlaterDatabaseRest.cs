@@ -1,7 +1,7 @@
-﻿/*using System.Runtime.CompilerServices;
-using Blater.Exceptions;
-using Blater.Models.Database;
+﻿using Blater.Exceptions;
 using Blater.Results;
+
+using System.Runtime.CompilerServices;
 
 namespace Blater.SDK.Implementations.REST.BlaterDatabase.Stores;
 
@@ -9,7 +9,7 @@ public class BlaterDatabaseRest(BlaterHttpClient client) : IBlaterDatabaseStore
 {
     private static string Endpoint => "/v1/Database";
 
-    public Task<BlaterResult<string>> Get(Ulid id)
+    public Task<BlaterResult<string>> Get(BlaterId id)
     {
         return client.Get<string>($"{Endpoint}/{id}");
     }
@@ -39,7 +39,7 @@ public class BlaterDatabaseRest(BlaterHttpClient client) : IBlaterDatabaseStore
         }
     }
 
-    public async Task<BlaterResult<Ulid>> Upsert(Ulid id, string json)
+    public async Task<BlaterResult<BlaterId>> Upsert(BlaterId id, string json)
     {
         var result = await client.Put<string>($"{Endpoint}/upsert/{id}", json);
 
@@ -53,11 +53,11 @@ public class BlaterDatabaseRest(BlaterHttpClient client) : IBlaterDatabaseStore
             return BlaterErrors.DatabaseError;
         }
 
-        var Ulid = response.ToUlid();
-        return Ulid;
+        var blaterId = response.ToBlaterId();
+        return blaterId;
     }
 
-    public async Task<BlaterResult<Ulid>> Update(Ulid id, string json)
+    public async Task<BlaterResult<BlaterId>> Update(BlaterId id, string json)
     {
         var result = await client.Put<string>($"{Endpoint}/update/{id}", json);
 
@@ -65,39 +65,39 @@ public class BlaterDatabaseRest(BlaterHttpClient client) : IBlaterDatabaseStore
         {
             return errors;
         }
-        
+
         if (string.IsNullOrWhiteSpace(response))
         {
             return BlaterErrors.DatabaseError;
         }
 
-        var Ulid = response.ToUlid();
-        return Ulid;
+        var blaterId = response.ToBlaterId();
+        return blaterId;
     }
 
-    public async Task<BlaterResult<Ulid>> Insert(Ulid id, string json)
+    public async Task<BlaterResult<BlaterId>> Insert(BlaterId id, string json)
     {
         var result = await client.Post<string>($"{Endpoint}/insert/{id}", json);
         if (result.HandleErrors(out var errors, out var response))
         {
             return errors;
         }
-        
+
         if (string.IsNullOrWhiteSpace(response))
         {
             return BlaterErrors.DatabaseError;
         }
 
-        var Ulid = response.ToUlid();
-        return Ulid;
+        var blaterId = response.ToBlaterId();
+        return blaterId;
     }
 
-    public Task<BlaterResult<bool>> Delete(Ulid id)
+    public Task<BlaterResult<bool>> Delete(BlaterId id)
     {
         return client.Delete<bool>($"{Endpoint}/delete/{id}");
     }
 
-    public Task<BlaterResult<int>> Delete(List<Ulid> ids)
+    public Task<BlaterResult<int>> Delete(List<BlaterId> ids)
     {
         var stringIds = ids.Select(x => x.ToString());
         return client.Post<int>($"{Endpoint}/delete", stringIds);
@@ -117,4 +117,4 @@ public class BlaterDatabaseRest(BlaterHttpClient client) : IBlaterDatabaseStore
     {
         return client.Post<int>($"{Endpoint}/{partition}/count", query);
     }
-}*/
+}

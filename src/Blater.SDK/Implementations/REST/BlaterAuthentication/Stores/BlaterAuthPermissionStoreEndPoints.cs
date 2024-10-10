@@ -1,5 +1,4 @@
-﻿using Blater.Models.Database;
-using Blater.Models.User;
+﻿using Blater.Models.User;
 using Blater.Results;
 
 namespace Blater.SDK.Implementations.REST.BlaterAuthentication.Stores;
@@ -24,7 +23,7 @@ public class BlaterAuthPermissionStoreEndPoints(BlaterHttpClient client) : IBlat
         return client.Delete<bool>($"{Endpoint}/{permission.Id}");
     }
 
-    public Task<BlaterResult<bool>> Delete(Ulid id)
+    public Task<BlaterResult<bool>> Delete(BlaterId id)
     {
         return client.Delete<bool>($"{Endpoint}/{id}");
     }
@@ -39,7 +38,7 @@ public class BlaterAuthPermissionStoreEndPoints(BlaterHttpClient client) : IBlat
         return client.Get<IReadOnlyList<BlaterPermission>>($"{Endpoint}");
     }
 
-    public Task<BlaterResult<BlaterPermission>> GetById(Ulid id)
+    public Task<BlaterResult<BlaterPermission>> GetById(BlaterId id)
     {
         return client.Get<BlaterPermission>($"{Endpoint}/get-by-id/{id}");
     }

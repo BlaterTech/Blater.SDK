@@ -1,6 +1,7 @@
-﻿using System.Linq.Expressions;
-using Blater.Exceptions;
+﻿using Blater.Exceptions;
 using Blater.Models.User;
+
+using System.Linq.Expressions;
 
 namespace Blater.SDK.Implementations.REST.BlaterAuthentication.Repositories;
 
@@ -40,7 +41,7 @@ public class BlaterAuthRoleRepositoryEndPoints(IBlaterAuthRoleStore storeEndPoin
         return response;
     }
 
-    public async Task<bool> Delete(Ulid id)
+    public async Task<bool> Delete(BlaterId id)
     {
         var result = await storeEndPoints.Delete(id);
 
@@ -54,9 +55,7 @@ public class BlaterAuthRoleRepositoryEndPoints(IBlaterAuthRoleStore storeEndPoin
 
     public async Task<bool> Delete(Expression<Func<BlaterRole, bool>> predicate)
     {
-        await Task.Delay(1);
-        return true;
-        /*var query = predicate.ExpressionToBlaterQuery();
+        var query = predicate.ExpressionToBlaterQuery();
 
         var result = await storeEndPoints.Delete(query);
 
@@ -65,7 +64,7 @@ public class BlaterAuthRoleRepositoryEndPoints(IBlaterAuthRoleStore storeEndPoin
             throw new BlaterException(errors);
         }
 
-        return response;*/
+        return response;
     }
 
     public async Task<bool> Delete(BlaterRole role)
@@ -80,7 +79,7 @@ public class BlaterAuthRoleRepositoryEndPoints(IBlaterAuthRoleStore storeEndPoin
         return response;
     }
 
-    public async Task<BlaterRole> GetById(Ulid id)
+    public async Task<BlaterRole> GetById(BlaterId id)
     {
         var result = await storeEndPoints.GetById(id);
 

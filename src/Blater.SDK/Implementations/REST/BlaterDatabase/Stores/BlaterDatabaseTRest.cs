@@ -1,8 +1,8 @@
-﻿/*using System.Linq.Expressions;
-using Blater.Exceptions;
+﻿using Blater.Exceptions;
 using Blater.Models.Bases;
-using Blater.Models.Database;
 using Blater.Results;
+
+using System.Linq.Expressions;
 
 namespace Blater.SDK.Implementations.REST.BlaterDatabase.Stores;
 
@@ -12,7 +12,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
 {
     public string Partition => typeof(T).FullName?.SanitizeString() ?? string.Empty;
 
-    private void ValidatePartition(Ulid id)
+    private void ValidatePartition(BlaterId id)
     {
         if (id.Partition != Partition)
         {
@@ -22,7 +22,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
 
     #region FindOne
 
-    public async Task<BlaterResult<T>> FindOne(Ulid id)
+    public async Task<BlaterResult<T>> FindOne(BlaterId id)
     {
         ValidatePartition(id);
 
@@ -41,7 +41,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         {
             return BlaterErrors.NotFound;
         }
-        
+
         return value;
     }
 
@@ -59,7 +59,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         {
             return BlaterErrors.NotFound;
         }
-        
+
         return model;
     }
 
@@ -78,7 +78,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         {
             return BlaterErrors.NotFound;
         }
-        
+
         return model;
     }
 
@@ -100,7 +100,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         {
             return BlaterErrors.NotFound;
         }
-        
+
         return models.AsReadOnly()!;
     }
 
@@ -119,19 +119,19 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         {
             return BlaterErrors.NotFound;
         }
-        
+
         return models.AsReadOnly()!;
     }
 
     #endregion
 
     #region Upsert/Update/Insert
-    
+
     public async Task<BlaterResult<T>> Upsert(T obj)
     {
-        if (obj.Id == Ulid.Empty || obj.Id == null!)
+        if (obj.Id == BlaterId.Empty || obj.Id == null!)
         {
-            obj.Id = Ulid.New(Partition);
+            obj.Id = BlaterId.New(Partition);
         }
 
         var result = await store.Upsert(obj.Id, obj.ToJson()!);
@@ -150,7 +150,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         return Update(obj.Id, obj);
     }
 
-    public async Task<BlaterResult<T>> Update(Ulid id, T obj)
+    public async Task<BlaterResult<T>> Update(BlaterId id, T obj)
     {
         ValidatePartition(id);
 
@@ -165,14 +165,14 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         return obj;
     }
 
-    public async Task<BlaterResult<T>> Insert(Ulid id, T obj)
+    public async Task<BlaterResult<T>> Insert(BlaterId id, T obj)
     {
-        if (obj.Id != Ulid.Empty)
+        if (obj.Id != BlaterId.Empty)
         {
             return BlaterErrors.InvalidOperation("Id must be empty");
         }
 
-        obj.Id = Ulid.New(Partition);
+        obj.Id = BlaterId.New(Partition);
 
         var json = obj.ToJson();
 
@@ -194,7 +194,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
 
     public Task<BlaterResult<T>> Insert(T obj)
     {
-        obj.Id = Ulid.NewUlid();
+        obj.Id = BlaterId.New(Partition);
         return Insert(obj.Id, obj);
     }
 
@@ -219,7 +219,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
             {
                 yield return BlaterErrors.JsonSerializationError(response);
             }
-            
+
             yield return model!;
         }
     }
@@ -228,7 +228,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
 
     #region Delete
 
-    public async Task<BlaterResult<bool>> Delete(Ulid id)
+    public async Task<BlaterResult<bool>> Delete(BlaterId id)
     {
         ValidatePartition(id);
 
@@ -237,11 +237,11 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         {
             return errors;
         }
-        
+
         return response;
     }
 
-    public async Task<BlaterResult<int>> Delete(List<Ulid> ids)
+    public async Task<BlaterResult<int>> Delete(List<BlaterId> ids)
     {
         ids.ForEach(ValidatePartition);
 
@@ -250,7 +250,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         {
             return errors;
         }
-        
+
         return response;
     }
 
@@ -261,7 +261,7 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         {
             return errors;
         }
-        
+
         return response;
     }
 
@@ -276,9 +276,9 @@ public class BlaterDatabaseTRest<T>(IBlaterDatabaseStore store)
         {
             return errors;
         }
-        
+
         return response;
     }
 
     #endregion
-}*/
+}

@@ -14,12 +14,12 @@ public class BlaterSDK(IBlaterAuthLoginStoreEndpoints loginStore, BlaterAuthStat
             Email = email,
             Password = password
         });
-        
-        if(response.HandleErrors(out var errors, out var user))
+
+        if (response.HandleErrors(out var errors, out var user))
         {
             throw new BlaterException(errors);
         }
-        
+
         authState.JwtToken = user;
     }
 
